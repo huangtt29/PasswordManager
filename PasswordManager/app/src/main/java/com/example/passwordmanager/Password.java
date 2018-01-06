@@ -3,6 +3,7 @@ package com.example.passwordmanager;
 import org.litepal.annotation.Encrypt;
 import org.litepal.crud.DataSupport;
 
+
 /**
  * Created by HTT on 2018/1/6.
  */
@@ -76,5 +77,6 @@ public class Password extends DataSupport{
     public void setPassword(String password) {
         this.password = password;
     }
+
 
 }

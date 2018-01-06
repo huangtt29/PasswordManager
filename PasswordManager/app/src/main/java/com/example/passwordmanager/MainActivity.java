@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         okBtn.setOnClickListener(this);
 
+
 //-------此处需要读取数据库看是否是第一次登录，根据是否是第一次登录选择mode。 mode=SET_NEWPASSWORD;mode=PASSWORD_SETED;
 //        和设置可见或不可见
         DataSupport.deleteAll(LoginPassword.class);
