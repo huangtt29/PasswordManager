@@ -1,5 +1,7 @@
 package com.example.passwordmanager;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -8,11 +10,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +35,8 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView titlebar;
     private ConstraintLayout search_area;
     private String title;
+    private LinearLayout details_page;
+    private LinearLayout choose_page;
 
     void variety_init() {
         String[] mail = {"常规邮箱","谷歌邮箱","雅虎邮箱","网易邮箱","QQ邮箱"};
@@ -54,6 +62,9 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
+        details_page = (LinearLayout)findViewById(R.id.details_page);
+        choose_page = (LinearLayout)findViewById(R.id.chooseVariety_page);
+
         RecyclerView details_RecyclerView=(RecyclerView)findViewById(R.id.details_RecyclerView);
         LinearLayoutManager linearLayoutManager1=new LinearLayoutManager(this);
         details_RecyclerView.setLayoutManager(linearLayoutManager1);
@@ -72,11 +83,14 @@ public class DetailsActivity extends AppCompatActivity {
         title = getIntent().getStringExtra("title");
         titlebar.setText(title);
 
-        //测试////////////////////////////
-        Detail_item item = new Detail_item(R.mipmap.ic_launcher_round,"常规邮箱","Jill");
-        detailList.add(item);
-        detailAdapter.notifyDataSetChanged();
-        /////////////////////
+        List<Password> records=DataSupport.findAll(Password.class);
+        for(Password p : records)
+        {
+            Detail_item item = new Detail_item(R.mipmap.ic_launcher_round, p.getTitle(),p.getAcount());
+            detailList.add(item);
+            detailAdapter.notifyDataSetChanged();
+        }
+
 
         search_area = (ConstraintLayout)findViewById(R.id.search_area);
         search_area.setOnClickListener(new View.OnClickListener() {
@@ -128,8 +142,7 @@ public class DetailsActivity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LinearLayout details_page = (LinearLayout)findViewById(R.id.details_page);
-                LinearLayout choose_page = (LinearLayout)findViewById(R.id.chooseVariety_page);
+
                 details_page.setVisibility(View.GONE);
                 choose_page.setVisibility(View.VISIBLE);
                 varietyList.clear();
@@ -172,12 +185,57 @@ public class DetailsActivity extends AppCompatActivity {
         choose_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LinearLayout details_page = (LinearLayout)findViewById(R.id.details_page);
-                LinearLayout choose_page = (LinearLayout)findViewById(R.id.chooseVariety_page);
+                details_page = (LinearLayout)findViewById(R.id.details_page);
+                choose_page = (LinearLayout)findViewById(R.id.chooseVariety_page);
                 details_page.setVisibility(View.VISIBLE);
                 choose_page.setVisibility(View.GONE);
             }
         });
-    }
 
+        varietyAdapter.setOnItemClickListener(new VarietyAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(int position) {
+                Intent intent=new Intent(DetailsActivity.this,AddActivity.class);
+                startActivityForResult(intent,1);
+            }
+
+            @Override
+            public void onLongClick(int position) {
+
+            }
+        });
+    }
+    @Override
+    protected void onActivityResult(int requstCode, int resultCode, Intent data) {
+        switch(requstCode) {
+            case 1:
+                if(resultCode == RESULT_OK) {
+//                    Log.d("testt", "onActivityResult: ");
+
+                    Password record = DataSupport.findLast(Password.class);
+                    if(record.getGroup_id()==0)
+                    {
+                        Log.d("testt", "onActivityResult: "+record.getAcount());
+                        Detail_item item = new Detail_item(R.mipmap.ic_launcher_round, record.getTitle(), record.getAcount());
+                        detailList.add(item);
+                        detailAdapter.notifyDataSetChanged();
+                    }
+                    else if(record.getGroup_id()==2)
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+                    details_page.setVisibility(View.VISIBLE);
+                    choose_page.setVisibility(View.GONE);
+                }
+                break;
+//            此处改动
+
+            default:
+                break;
+        }
+    }
 }
