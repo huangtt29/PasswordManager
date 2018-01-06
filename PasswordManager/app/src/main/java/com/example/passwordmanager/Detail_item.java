@@ -9,6 +9,12 @@ public class Detail_item {
     private String detail_title;
     private String detail_username;
 
+    public Detail_item(int icon,String title,String username) {
+        this.detail_icon = icon;
+        this.detail_title = title;
+        this.detail_username = username;
+    }
+
     public int getDetail_icon() {
         return detail_icon;
     }

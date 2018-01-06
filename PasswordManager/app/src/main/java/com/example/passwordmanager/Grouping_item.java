@@ -7,7 +7,13 @@ package com.example.passwordmanager;
 public class Grouping_item {
     private int grouping_icon;
     private String grouping_title;
-    private String grouping_num;
+    private int grouping_num;
+
+    public Grouping_item(int icon, String title, int num) {
+        this.grouping_icon = icon;
+        this.grouping_title = title;
+        this.grouping_num = num;
+    }
 
     public int getGrouping_icon() {
         return grouping_icon;
@@ -17,11 +23,11 @@ public class Grouping_item {
         this.grouping_icon = grouping_icon;
     }
 
-    public String getGrouping_num() {
+    public int getGrouping_num() {
         return grouping_num;
     }
 
-    public void setGrouping_num(String grouping_num) {
+    public void setGrouping_num(int grouping_num) {
         this.grouping_num = grouping_num;
     }
 
