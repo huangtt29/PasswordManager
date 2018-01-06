@@ -10,43 +10,40 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * Created by HTT on 2018/1/1.
+ * Created by lenovo on 2018/1/6.
  */
 
-public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> {
-    private List<Grouping_item> records;
-    private GroupAdapter.OnItemClickListener mOnItemClickListener;
-    public GroupAdapter(List<Grouping_item> records_)
+public class VarietyAdapter extends RecyclerView.Adapter<VarietyAdapter.ViewHolder> {
+    private List<variety> records;
+    private VarietyAdapter.OnItemClickListener mOnItemClickListener;
+    public VarietyAdapter(List<variety> records_)
     {
         records=records_;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder{
-        ImageView grouping_icon;
-        TextView grouping_title;
-        TextView grouping_num;
+        ImageView variety_icon;
+        TextView variety_name;
         public ViewHolder(View view)
         {
             super(view);
-            grouping_icon=(ImageView)view.findViewById(R.id.grouping_icon);
-            grouping_title=(TextView)view.findViewById(R.id.grouping_title);
-            grouping_num=(TextView)view.findViewById(R.id.grouping_num);
+            variety_icon=(ImageView)view.findViewById(R.id.variety_icon);
+            variety_name=(TextView)view.findViewById(R.id.variety_name);
         }
     }
     @Override
-    public GroupAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public VarietyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.grouping_item,parent,false);
-        GroupAdapter.ViewHolder holder=new GroupAdapter.ViewHolder(view);
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.variety_item,parent,false);
+        VarietyAdapter.ViewHolder holder=new VarietyAdapter.ViewHolder(view);
         return holder;
     }
     @Override
-    public void onBindViewHolder(final GroupAdapter.ViewHolder holder, int position)
+    public void onBindViewHolder(final VarietyAdapter.ViewHolder holder, int position)
     {
-        Grouping_item record=records.get(position);
-        holder.grouping_icon.setImageResource(record.getGrouping_icon());
-        holder.grouping_title.setText(record.getGrouping_title());
-        holder.grouping_num.setText(Integer.toString(record.getGrouping_num()));
+        variety record=records.get(position);
+        holder.variety_icon.setImageResource(record.getVariety_icon());
+        holder.variety_name.setText(record.getVariety_name());
         if(mOnItemClickListener!=null)
         {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +73,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         void onClick(int position);
         void onLongClick(int position);
     }
-    public void setOnItemClickListener(GroupAdapter.OnItemClickListener a){
+    public void setOnItemClickListener(VarietyAdapter.OnItemClickListener a){
         mOnItemClickListener=a;
     }
 }

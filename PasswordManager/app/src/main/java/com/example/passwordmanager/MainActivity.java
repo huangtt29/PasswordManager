@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -17,10 +18,11 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button okBtn;
-    private Button clearBtn;
     private EditText newPasswordEdit;
     private EditText comfirmPasswordEdit;
     private EditText passwordEdit;
+    private ConstraintLayout setPassword_page;
+    private ConstraintLayout passwordSeted_page;
     private int SET_NEWPASSWORD=1;
     private int PASSWORD_SETED=2;
     private int mode=SET_NEWPASSWORD;
@@ -33,13 +35,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         newPasswordEdit=(EditText)findViewById(R.id.newpassword);
-        comfirmPasswordEdit=(EditText)findViewById(R.id.comfirmpassword);
+        comfirmPasswordEdit=(EditText)findViewById(R.id.confirmpassword);
         passwordEdit=(EditText)findViewById(R.id.password);
+        setPassword_page = (ConstraintLayout)findViewById(R.id.setPassword_page);
+        passwordSeted_page = (ConstraintLayout)findViewById(R.id.passwordSeted_page);
         okBtn=(Button)findViewById(R.id.okBtn);
-        clearBtn=(Button)findViewById(R.id.clearBtn);
 
         okBtn.setOnClickListener(this);
-        clearBtn.setOnClickListener(this);
 
 //-------此处需要读取数据库看是否是第一次登录，根据是否是第一次登录选择mode。 mode=SET_NEWPASSWORD;mode=PASSWORD_SETED;
 //        和设置可见或不可见
@@ -64,9 +66,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     else
                     {
-                        newPasswordEdit.setVisibility(View.GONE);
-                        comfirmPasswordEdit.setVisibility(View.GONE);
-                        passwordEdit.setVisibility(View.VISIBLE);
+                        setPassword_page.setVisibility(View.GONE);
+                        passwordSeted_page.setVisibility(View.VISIBLE);
                         password=comfirmPasswordText;
 
 //                        此处需要存密码进数据库
@@ -91,17 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 break;
-            case R.id.clearBtn:
-                if(mode==SET_NEWPASSWORD)
-                {
-                    newPasswordEdit.setText("");
-                    comfirmPasswordEdit.setText("");
-                }
-                else
-                {
-                    passwordEdit.setText("");
-                }
-                break;
+
         }
     }
 }

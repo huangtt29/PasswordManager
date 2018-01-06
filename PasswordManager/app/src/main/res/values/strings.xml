@@ -6,4 +6,6 @@
     <string name="title_activity_grouping">grouping</string>
     <string name="title_activity_group_list">GroupListActivity</string>
     <string name="title_activity_details">DetailsActivity</string>
+    <string name="title_all">所有</string>
+    <string name="title_account">账户</string>
 </resources>

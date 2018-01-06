@@ -3,4 +3,10 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="ivory">#FFFFF0</color><!--象牙色 -->
+    <color name="lightgray">#D3D3D3</color><!--亮灰色 -->
+    <color name="gray">#ADADAD</color><!--灰色 -->
+    <color name="dimgray">#696969</color><!--暗灰色 -->
+    <color name="smokewhite">#F5F5F5</color><!--白烟色 -->
+    <color name="green">#00BD00</color><!--绿色 -->
 </resources>

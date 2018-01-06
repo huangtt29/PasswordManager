@@ -7,12 +7,87 @@
     android:layout_height="match_parent"
     tools:context="com.example.passwordmanager.GroupListActivity">
 
-    <android.support.v7.widget.RecyclerView
+    /*-------------------------------标题栏--------------------------------------------*/
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/group_RecyclerView">
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/group_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/smokewhite"
+            app:popupTheme="@style/AppTheme.PopupOverlay" >
+            <TextView
+                android:id="@+id/titlebar1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="分组列表"
+                android:textColor="#000000"
+                android:textSize="18dp"
+                android:textAlignment="center"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="10dp"/>
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
 
-    </android.support.v7.widget.RecyclerView>
+
+    <FrameLayout
+        android:id="@+id/content1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background = "@color/smokewhite"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        /*------------------------------分组列表---------------------------------*/
+        <RelativeLayout
+            android:id="@+id/grouplist_page"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="50dp">
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/group_RecyclerView">
+
+            </android.support.v7.widget.RecyclerView>
+        </RelativeLayout>
+
+        /*---------------------------------最近查看------------------------------------*/
+        <RelativeLayout
+            android:id="@+id/recent_page"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:visibility="gone">
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/recent_RecyclerView">
+
+            </android.support.v7.widget.RecyclerView>
+        </RelativeLayout>
+
+        /*_________________________________设置———————————____________________________________*/
+        <RelativeLayout
+            android:id="@+id/setting_page"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:visibility="gone">
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/setting_RecyclerView">
+
+            </android.support.v7.widget.RecyclerView>
+        </RelativeLayout>
+
+    </FrameLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
