@@ -16,6 +16,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.litepal.crud.DataSupport;
+import org.litepal.tablemanager.Connector;
+
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button okBtn;
@@ -47,6 +52,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 //-------此处需要读取数据库看是否是第一次登录，根据是否是第一次登录选择mode。 mode=SET_NEWPASSWORD;mode=PASSWORD_SETED;
 //        和设置可见或不可见
+        DataSupport.deleteAll(LoginPassword.class);
+//        List<LoginPassword> loginPasswordList=DataSupport.findAll(LoginPassword.class);
+//        for(LoginPassword loginPassword : loginPasswordList)
+//        {
+//            Log.d("helli", "onCreate: "+loginPassword.getLoginPassword());
+//        }
+        if(mode==PASSWORD_SETED)
+        {
+            LoginPassword loginPassword=DataSupport.findFirst(LoginPassword.class);
+            String passwordInDB =loginPassword.getLoginPassword();
+            Log.d("hello", "onCreate: "+passwordInDB);
+//            Toast.makeText(this, passwordInDB, Toast.LENGTH_SHORT).show();
+
+        }
+
+
+
 
     }
     @Override
@@ -64,6 +86,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     else if(!newPasswordText.equals(comfirmPasswordText))
                     {
+                        Log.d("hello", newPasswordText);
+                        Log.d("hello",comfirmPasswordText);
                         Toast.makeText(this, "Password Mismatch", Toast.LENGTH_SHORT).show();
                     }
                     else
@@ -73,6 +97,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         password=comfirmPasswordText;
 
 //                        此处需要存密码进数据库
+                        LoginPassword loginPassword=new LoginPassword();
+                        loginPassword.setLoginPassword(password);
+                        loginPassword.save();
+
+
                         mode=PASSWORD_SETED;
                         Toast.makeText(this, "Password saved", Toast.LENGTH_SHORT).show();
 //                        Log.d("hello", "onClick: "+mode);

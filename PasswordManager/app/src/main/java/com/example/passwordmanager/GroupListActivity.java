@@ -7,10 +7,13 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +69,10 @@ public class GroupListActivity extends AppCompatActivity {
         String[] title = {"所有","账户","邮箱","钱包","其他"};
         int[] icon = {R.mipmap.all,R.mipmap.account,R.mipmap.mail,R.mipmap.wallet,R.mipmap.other};
         for(int i = 0; i < 5; i++) {
+            int count=0;
+//            List<Password> passwordList=DataSupport.where("group_id = ?",String.valueOf(i)).find(Password.class);
+//            count=passwordList.size();
+            Log.d("count", "grouplist_init: "+count);
             Grouping_item item = new Grouping_item(icon[i],title[i],0);
             groupList.add(item);
         }
