@@ -10,6 +10,7 @@ import org.litepal.crud.DataSupport;
 
 public class Password extends DataSupport{
     private String title;
+    private String type;
     private String acount;
     private String decription;
     private String merchant;
@@ -18,8 +19,14 @@ public class Password extends DataSupport{
     @Encrypt(algorithm = "AES")
     private String password;
 
-    public Password(String title,String acount,String decription,String merchant,int group_id,String password)
+    @Override
+    protected long getBaseObjId() {
+        return super.getBaseObjId();
+    }
+
+    public Password(String type, String title, String acount, String decription, String merchant, int group_id, String password)
     {
+        this.type = type;
         this.acount=acount;
         this.title=title;
         this.decription=decription;
@@ -28,6 +35,13 @@ public class Password extends DataSupport{
         this.merchant=merchant;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public long getGroup_id() {
         return group_id;

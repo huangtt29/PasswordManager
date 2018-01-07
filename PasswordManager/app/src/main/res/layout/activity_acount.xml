@@ -114,6 +114,15 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true" />
             <TextView
+                android:id="@+id/merchant_t"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="商户"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="50dp"
+                android:visibility="gone"/>
+            <TextView
                 android:id="@+id/desc_t"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -130,6 +139,14 @@
                 android:layout_toRightOf="@+id/pass_t"
                 android:layout_marginLeft="50dp"/>
             <TextView
+                android:id="@+id/ac_merchant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:layout_alignLeft="@+id/ac_password"
+                android:layout_alignTop="@+id/merchant_t"
+                android:visibility="gone"/>
+            <TextView
                 android:id="@+id/ac_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -138,73 +155,60 @@
                 android:layout_alignTop="@+id/desc_t"/>
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/ac_layout2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:background="#FFFFFF"
-            android:layout_marginTop="20dp"
-            android:visibility="gone">
-            <TextView
-                android:id="@+id/pass_t2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="密码"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true" />
-            <TextView
-                android:id="@+id/merchant_t2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="商户"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="50dp"/>
-            <TextView
-                android:id="@+id/desc_t2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="描述"
-                android:layout_alignParentLeft="true"
-                android:layout_alignTop="@+id/merchant_t2"
-                android:layout_marginTop="50dp"/>
-            <TextView
-                android:id="@+id/ac_password2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lines="1"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/pass_t2"
-                android:layout_marginLeft="50dp"/>
-            <TextView
-                android:id="@+id/ac_merchant2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lines="1"
-                android:layout_alignLeft="@+id/ac_password2"
-                android:layout_alignTop="@+id/merchant_t2"/>
-            <TextView
-                android:id="@+id/ac_desc2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lines="3"
-                android:layout_alignLeft="@+id/ac_password2"
-                android:layout_alignTop="@+id/desc_t2"/>
-        </RelativeLayout>
+        <!--<RelativeLayout-->
+            <!--android:id="@+id/ac_layout2"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:padding="10dp"-->
+            <!--android:background="#FFFFFF"-->
+            <!--android:layout_marginTop="20dp"-->
+            <!--android:visibility="gone">-->
+            <!--<TextView-->
+                <!--android:id="@+id/pass_t2"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="密码"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_alignParentTop="true" />-->
+            <!--<TextView-->
+                <!--android:id="@+id/merchant_t2"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="商户"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_alignParentTop="true"-->
+                <!--android:layout_marginTop="50dp"/>-->
+            <!--<TextView-->
+                <!--android:id="@+id/desc_t2"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="描述"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_alignTop="@+id/merchant_t2"-->
+                <!--android:layout_marginTop="50dp"/>-->
+            <!--<TextView-->
+                <!--android:id="@+id/ac_password2"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:lines="1"-->
+                <!--android:layout_alignParentTop="true"-->
+                <!--android:layout_toRightOf="@+id/pass_t2"-->
+                <!--android:layout_marginLeft="50dp"/>-->
+            <!--<TextView-->
+                <!--android:id="@+id/ac_merchant2"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:lines="1"-->
+                <!--android:layout_alignLeft="@+id/ac_password2"-->
+                <!--android:layout_alignTop="@+id/merchant_t2"/>-->
+            <!--<TextView-->
+                <!--android:id="@+id/ac_desc2"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:lines="3"-->
+                <!--android:layout_alignLeft="@+id/ac_password2"-->
+                <!--android:layout_alignTop="@+id/desc_t2"/>-->
+        <!--</RelativeLayout>-->
     </LinearLayout>
 
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:id="@+id/acount_imformation"></LinearLayout>-->
-
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:id="@+id/acount_alter"-->
-        <!--app:layout_constraintTop_toBottomOf="@id/acount_imformation"-->
-        <!--android:visibility="gone">-->
-
-    <!--</LinearLayout>-->
 </android.support.constraint.ConstraintLayout>

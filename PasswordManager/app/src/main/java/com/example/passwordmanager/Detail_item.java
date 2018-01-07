@@ -5,13 +5,13 @@ package com.example.passwordmanager;
  */
 
 public class Detail_item {
-    private int pass_id;
+    private long pass_id;
     private int detail_icon;
     private String detail_type;
     private String detail_title;
     private String detail_username;
 
-    public Detail_item(int id1,int icon,String type,String title,String username) {
+    public Detail_item(long id1,int icon,String type,String title,String username) {
         this.pass_id = id1;
         this.detail_type = type;
         this.detail_icon = icon;
@@ -19,7 +19,7 @@ public class Detail_item {
         this.detail_username = username;
     }
 
-    public int getPass_id() {
+    public long getPass_id() {
         return pass_id;
     }
 
@@ -39,7 +39,7 @@ public class Detail_item {
         return detail_username;
     }
 
-    public void setPass_id(int id) {
+    public void setPass_id(long id) {
         pass_id = id;
     }
 

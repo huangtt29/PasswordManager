@@ -1,12 +1,16 @@
 package com.example.passwordmanager;
 
+
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class AddActivity extends AppCompatActivity {
@@ -19,8 +23,18 @@ public class AddActivity extends AppCompatActivity {
     private EditText add_password;
     private EditText add_description;
     private EditText add_merchant;
+    private TextView merchant_t;
+    private TextView desc_t;
     private ImageView add_icon;
-    private int group_id=0;
+    private int group_id=-1;
+    private String type;
+    private int mode;
+    private int icon;
+    private int pass_id;
+    private String[] mail = {"常规邮箱","谷歌邮箱","雅虎邮箱","网易邮箱","QQ邮箱"};
+    private String[] account = {"常规登录","微信","QQ","新浪微博","知乎","淘宝","京东","亚马逊","Facebook","Twitter","Instergram"};
+    private String[] wallet = {"银行卡","信用卡","身份证","驾驶证","护照","会员卡"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,30 +49,107 @@ public class AddActivity extends AppCompatActivity {
         add_description=(EditText)findViewById(R.id.add_description);
         add_merchant=(EditText)findViewById(R.id.add_merchant);
         add_icon=(ImageView)findViewById(R.id.add_icon);
+        merchant_t=(TextView)findViewById(R.id.merchant_t2);
+        desc_t=(TextView)findViewById(R.id.desc_t2);
 
+
+        Intent intent = getIntent();
+        mode = intent.getIntExtra("mode",0);
+        if(mode == 0) {
+            type = intent.getStringExtra("type");
+            icon = intent.getIntExtra("icon",R.mipmap.ic_launcher_round);
+            add_type.setText(type);
+            add_icon.setImageResource(icon);
+            add_title.setText(type);   ///////title默认等于type
+            merchant_t.setVisibility(View.GONE);
+            add_merchant.setVisibility(View.GONE);
+            ////确定分组
+            if(group_id == -1) {
+                for(int i = 0; i < account.length; i++) {
+                    if(type.equals(account[i])) {
+                        group_id=0;
+                        break;
+                    }
+                }
+            }
+            if(group_id == -1) {
+                for(int i = 0; i < mail.length; i++) {
+                    if(type.equals(mail[i])) {
+                        group_id=1;
+                        break;
+                    }
+                }
+            }
+            if(group_id == -1) {
+                for(int i = 0; i < wallet.length; i++) {
+                    if(type.equals(wallet[i])) {
+                        group_id=2;
+                        break;
+                    }
+                }
+            }
+            if(group_id == -1) {
+                group_id = 0; //默认
+            }
+        } else if(mode == 1){
+            pass_id = intent.getIntExtra("pass_id",0);
+            merchant_t.setVisibility(View.VISIBLE);
+            add_merchant.setVisibility(View.VISIBLE);
+            RelativeLayout.LayoutParams layout=(RelativeLayout.LayoutParams)desc_t.getLayoutParams();
+            layout.setMargins(0,200,0,0);
+            desc_t.setLayoutParams(layout);
+            ////数据库操作，获取信息,并设置在相应控件中
+        }
+
+        if(group_id == 0 | group_id == 1) {
+            add_merchant.setVisibility(View.GONE);
+        } else {
+            add_merchant.setVisibility(View.VISIBLE);
+        }
 
         add_saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 // public Password(String title,String acount,String decription,String merchant,int group_id,String password)
-                String title=add_title.getText().toString();
-                String acount=add_acount.getText().toString();
-                String password=add_password.getText().toString();
-                String description=add_description.getText().toString();
-                String merchant=add_merchant.getText().toString();
-//               加入数据库
-                Password record=new Password(title,acount,description,merchant, group_id , password);
-                record.save();
-                Intent intent=new Intent();
-                setResult(RESULT_OK,intent);
-                finish();
+                if(mode == 0) {
+                    String title=add_title.getText().toString();
+                    String acount=add_acount.getText().toString();
+                    String password=add_password.getText().toString();
+                    String description=add_description.getText().toString();
+                    String merchant=add_merchant.getText().toString();
+
+//                  加入数据库
+                    Password record=new Password(type,title,acount,description,merchant, group_id , password);
+                    record.save();
+                    Intent intent=new Intent();
+                    setResult(RESULT_OK,intent);
+                    finish();
+                }
+                else if(mode == 1) {
+                    ///数据库操作，修改信息模式
+                }
+
             }
         });
 
         add_cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                AlertDialog.Builder dialog = new AlertDialog.Builder(AddActivity.this);
+                dialog.setTitle("你尚未保存修改，确定退出吗？")
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                ;
+                            }
+                        })
+                        .show();
             }
         });
 
