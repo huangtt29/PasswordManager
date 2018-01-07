@@ -45,12 +45,11 @@ public class DetailsActivity extends AppCompatActivity {
     private String title;
     private LinearLayout details_page;
     private LinearLayout choose_page;
-
+    private String[] mail = {"常规邮箱","谷歌邮箱","雅虎邮箱","网易邮箱","QQ邮箱"};
+    private String[] account = {"常规登录","微信","QQ","新浪微博","知乎","淘宝","京东","亚马逊","Facebook","Twitter","Instergram"};
+    private String[] wallet = {"银行卡","信用卡","身份证","驾驶证","护照","会员卡"};
 
     void variety_init() {
-        String[] mail = {"常规邮箱","谷歌邮箱","雅虎邮箱","网易邮箱","QQ邮箱"};
-        String[] account = {"常规登录","微信","QQ","新浪微博","知乎","淘宝","京东","亚马逊","Facebook","Twitter","Instergram"};
-        String[] wallet = {"银行卡","信用卡","身份证","驾驶证","护照","会员卡"};
         int j=0;
         for(int i = 0; i < account.length; i++) {
             variety v = new variety(R.mipmap.ic_launcher_round,account[i]);
@@ -96,7 +95,7 @@ public class DetailsActivity extends AppCompatActivity {
         List<Password> records=DataSupport.findAll(Password.class);
         for(Password p : records)
         {
-            Detail_item item = new Detail_item(R.mipmap.ic_launcher_round, p.getTitle(),p.getAcount());
+            Detail_item item = new Detail_item(p.getBaseObjId(),R.mipmap.ic_launcher_round,p.getType(), p.getTitle(),p.getAcount());
             detailList.add(item);
             detailAdapter.notifyDataSetChanged();
         }
@@ -109,8 +108,7 @@ public class DetailsActivity extends AppCompatActivity {
                 //intent.putExtra("type",detailList.get(position).getDetail_type());
                 //intent.putExtra("title",detailList.get(position).getDetail_title());
                 intent.putExtra("pass_id",detailList.get(position).getPass_id());
-
-                intent.putExtra("group_id",0);//待修改，groupid可以从数据库取，不需要记录在detailitem
+                //intent.putExtra("group_id",0);//待修改，groupid可以从数据库取，不需要记录在detailitem
                 startActivity(intent);
             }
 
@@ -123,6 +121,7 @@ public class DetailsActivity extends AppCompatActivity {
             public void onDeleteClick(int position) {
                 detailList.remove(position);
                 detailAdapter.notifyDataSetChanged();
+                ///数据库删除
             }
         });
 
@@ -163,7 +162,6 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
 
-//        LinearLayout back = (LinearLayout)findViewById(R.id.back_to_grouplist);
         TextView back = (TextView)findViewById(R.id.back_to_grouplist);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,19 +195,11 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
 
-//        ImageView delete = (ImageView)findViewById(R.id.delete);
-//        delete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
 
         ImageView add = (ImageView)findViewById(R.id.add);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 details_page.setVisibility(View.GONE);
                 choose_page.setVisibility(View.VISIBLE);
                 varietyList.clear();
@@ -262,7 +252,12 @@ public class DetailsActivity extends AppCompatActivity {
         varietyAdapter.setOnItemClickListener(new VarietyAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
+                String type = varietyList.get(position).getVariety_name();
+                int icon = varietyList.get(position).getVariety_icon();
                 Intent intent=new Intent(DetailsActivity.this,AddActivity.class);
+                intent.putExtra("type",type);
+                intent.putExtra("icon",icon);
+                intent.putExtra("mode",0); //添加模式
                 startActivityForResult(intent,1);
             }
 
@@ -283,7 +278,7 @@ public class DetailsActivity extends AppCompatActivity {
                     if(record.getGroup_id()==0)
                     {
                         Log.d("testt", "onActivityResult: "+record.getAcount());
-                        Detail_item item = new Detail_item(R.mipmap.ic_launcher_round, record.getTitle(), record.getAcount());
+                        Detail_item item = new Detail_item(record.getBaseObjId(),R.mipmap.ic_launcher_round,record.getType(), record.getTitle(), record.getAcount());
                         detailList.add(item);
                         detailAdapter.notifyDataSetChanged();
                     }
