@@ -6,12 +6,17 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import org.litepal.crud.DataSupport;
+
+import java.util.List;
 
 public class AddActivity extends AppCompatActivity {
 
@@ -30,7 +35,7 @@ public class AddActivity extends AppCompatActivity {
     private String type;
     private int mode;
     private int icon;
-    private int pass_id;
+    private long pass_id;
     private String[] mail = {"常规邮箱","谷歌邮箱","雅虎邮箱","网易邮箱","QQ邮箱"};
     private String[] account = {"常规登录","微信","QQ","新浪微博","知乎","淘宝","京东","亚马逊","Facebook","Twitter","Instergram"};
     private String[] wallet = {"银行卡","信用卡","身份证","驾驶证","护照","会员卡"};
@@ -55,6 +60,7 @@ public class AddActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         mode = intent.getIntExtra("mode",0);
+        Log.d("mode", "onCreate: "+mode);
         if(mode == 0) {
             type = intent.getStringExtra("type");
             icon = intent.getIntExtra("icon",R.mipmap.ic_launcher_round);
@@ -92,13 +98,24 @@ public class AddActivity extends AppCompatActivity {
                 group_id = 0; //默认
             }
         } else if(mode == 1){
-            pass_id = intent.getIntExtra("pass_id",0);
+            pass_id = intent.getLongExtra("pass_id",0);
             merchant_t.setVisibility(View.VISIBLE);
             add_merchant.setVisibility(View.VISIBLE);
             RelativeLayout.LayoutParams layout=(RelativeLayout.LayoutParams)desc_t.getLayoutParams();
             layout.setMargins(0,200,0,0);
             desc_t.setLayoutParams(layout);
+
             ////数据库操作，获取信息,并设置在相应控件中
+            Log.d("passss", "onCreate: "+pass_id);
+            List<Password> list= DataSupport.where("id = ?",String.valueOf(pass_id)).find(Password.class);
+            for(Password p :list)
+            {
+                add_title.setText(p.getTitle());
+                add_acount.setText(p.getAcount());
+                add_password.setText(p.getPassword());
+                add_description.setText(p.getDecription());
+                add_merchant.setText(p.getMerchant());
+            }
         }
 
         if(group_id == 0 | group_id == 1) {
@@ -118,17 +135,30 @@ public class AddActivity extends AppCompatActivity {
                     String description=add_description.getText().toString();
                     String merchant=add_merchant.getText().toString();
 
+//                    Log.d("type", "onClick: "+type);
 //                  加入数据库
                     Password record=new Password(type,title,acount,description,merchant, group_id , password);
                     record.save();
-                    Intent intent=new Intent();
-                    setResult(RESULT_OK,intent);
-                    finish();
+
                 }
                 else if(mode == 1) {
-                    ///数据库操作，修改信息模式
-                }
+                    ///数据库操作，修改信息模式,更新数据
+                    String title=add_title.getText().toString();
+                    String acount=add_acount.getText().toString();
+                    String password=add_password.getText().toString();
+                    String description=add_description.getText().toString();
+                    String merchant=add_merchant.getText().toString();
 
+//                    List<Password> list= DataSupport.where("id = ?",String.valueOf(pass_id)).find(Password.class);
+
+                    Password record=new Password(type,title,acount,description,merchant, group_id , password);
+                    record.updateAll("id =? ",String.valueOf(pass_id));
+
+                }
+                Intent intent=new Intent();
+                intent.putExtra("pass_id",pass_id);
+                setResult(RESULT_OK,intent);
+                finish();
             }
         });
 

@@ -38,7 +38,7 @@ public class DetailsActivity extends AppCompatActivity {
     private List<variety> walletList = new ArrayList<>();
     private TextView titlebar;
     private ConstraintLayout search_area;
-
+    private int group_id;
     private String group_title;
     private TextView edit;
 
@@ -87,15 +87,32 @@ public class DetailsActivity extends AppCompatActivity {
 
         variety_init();
 
+
         titlebar = (TextView)findViewById(R.id.titlebar2);
         group_title = getIntent().getStringExtra("title");
         titlebar.setText(group_title);
 
+        List<Password> records;
+        if(group_title.equals("所有"))
+        {
+            records=DataSupport.findAll(Password.class);
+        }
+        else
+        {
+            if(group_title.equals("账户"))
+                group_id=0;
+            else if(group_title.equals("邮箱"))
+                group_id=1;
+            else
+                group_id=2;
+//            Log.d("hello", String.valueOf(group_id));
+            records=DataSupport.where("group_id=?" , String.valueOf(group_id)).find(Password.class);
+        }
 
-        List<Password> records=DataSupport.findAll(Password.class);
         for(Password p : records)
         {
             Detail_item item = new Detail_item(p.getBaseObjId(),R.mipmap.ic_launcher_round,p.getType(), p.getTitle(),p.getAcount());
+            Log.d("id", "onCreate: "+p.getBaseObjId());
             detailList.add(item);
             detailAdapter.notifyDataSetChanged();
         }
@@ -107,6 +124,8 @@ public class DetailsActivity extends AppCompatActivity {
                 intent.putExtra("group_title",group_title);
                 //intent.putExtra("type",detailList.get(position).getDetail_type());
                 //intent.putExtra("title",detailList.get(position).getDetail_title());
+//                detailList.get(position).
+//                Log.d("passid", "onClick: "+detailList.get(position).getPass_id());
                 intent.putExtra("pass_id",detailList.get(position).getPass_id());
                 //intent.putExtra("group_id",0);//待修改，groupid可以从数据库取，不需要记录在detailitem
                 startActivity(intent);
@@ -119,9 +138,18 @@ public class DetailsActivity extends AppCompatActivity {
 
             @Override
             public void onDeleteClick(int position) {
+
+                ///数据库删除
+                Detail_item item=detailList.get(position);
+                Log.d("hello", "onDeleteClick: "+item.getDetail_username());
+                DataSupport.deleteAll(Password.class,"acount = ?",item.getDetail_username());
+                List<Password> list=DataSupport.findAll(Password.class);
+                for(Password p :list)
+                {
+                    Log.d("hello", "onDeleteClick: "+p.getAcount());
+                }
                 detailList.remove(position);
                 detailAdapter.notifyDataSetChanged();
-                ///数据库删除
             }
         });
 
@@ -136,7 +164,7 @@ public class DetailsActivity extends AppCompatActivity {
                 ConstraintLayout.LayoutParams layout=(ConstraintLayout.LayoutParams)search_icon.getLayoutParams();
                 layout.setMargins(10,0,0,0);
                 search_icon.setLayoutParams(layout);
-                search_hint.setVisibility(View.GONE);
+                search_hint.setVisibility(View.INVISIBLE);
                 search_input.setVisibility(View.VISIBLE);
                 search_input.requestFocus();
                 search_cancel.setVisibility(View.VISIBLE);
@@ -275,23 +303,29 @@ public class DetailsActivity extends AppCompatActivity {
 //                    Log.d("testt", "onActivityResult: ");
 
                     Password record = DataSupport.findLast(Password.class);
-                    if(record.getGroup_id()==0)
-                    {
-                        Log.d("testt", "onActivityResult: "+record.getAcount());
-                        Detail_item item = new Detail_item(record.getBaseObjId(),R.mipmap.ic_launcher_round,record.getType(), record.getTitle(), record.getAcount());
-                        detailList.add(item);
-                        detailAdapter.notifyDataSetChanged();
-                    }
-                    else if(record.getGroup_id()==2)
-                    {
+//                    Log.d("testtt", "onActivityResult: "+record.getGroup_id());
+//                    if(record.getGroup_id()==0)
+//                    {
+//                        Log.d("testt", "onActivityResult: "+record.getAcount());
+//
+//                    }
+//                    else if(record.getGroup_id()==1)
+//                    {
+//
+//                    }
+//                    else
+//                    {
+//
+//                    }
+                    Detail_item item = new Detail_item(record.getBaseObjId(),R.mipmap.ic_launcher_round,record.getType(), record.getTitle(), record.getAcount());
+                    detailList.add(item);
+                    detailAdapter.notifyDataSetChanged();
+                    LinearLayout details_page = (LinearLayout)findViewById(R.id.details_page);
+                    LinearLayout choose_page = (LinearLayout)findViewById(R.id.chooseVariety_page);
 
-                    }
-                    else
-                    {
+//                    details_page.setVisibility(View.VISIBLE);
+//                    choose_page.setVisibility(View.GONE);
 
-                    }
-                    details_page.setVisibility(View.VISIBLE);
-                    choose_page.setVisibility(View.GONE);
                 }
                 break;
 //            此处改动
