@@ -1,5 +1,7 @@
 package com.example.passwordmanager;
 
+import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -28,7 +30,8 @@ public class DetailsActivity extends AppCompatActivity {
     private List<variety> walletList = new ArrayList<>();
     private TextView titlebar;
     private ConstraintLayout search_area;
-    private String title;
+    private String group_title;
+    private TextView edit;
 
     void variety_init() {
         String[] mail = {"常规邮箱","谷歌邮箱","雅虎邮箱","网易邮箱","QQ邮箱"};
@@ -69,14 +72,39 @@ public class DetailsActivity extends AppCompatActivity {
         variety_init();
 
         titlebar = (TextView)findViewById(R.id.titlebar2);
-        title = getIntent().getStringExtra("title");
-        titlebar.setText(title);
+        group_title = getIntent().getStringExtra("title");
+        titlebar.setText(group_title);
 
         //测试////////////////////////////
-        Detail_item item = new Detail_item(R.mipmap.ic_launcher_round,"常规邮箱","Jill");
+        Detail_item item = new Detail_item(1,R.mipmap.ic_launcher_round,"常规邮箱","常规邮箱","Jill");
         detailList.add(item);
         detailAdapter.notifyDataSetChanged();
         /////////////////////
+
+        detailAdapter.setOnItemClickListener(new DetailAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(int position) {
+                Intent intent = new Intent(DetailsActivity.this,acountActivity.class);
+                intent.putExtra("group_title",group_title);
+                //intent.putExtra("type",detailList.get(position).getDetail_type());
+                //intent.putExtra("title",detailList.get(position).getDetail_title());
+                intent.putExtra("pass_id",detailList.get(position).getPass_id());
+
+                intent.putExtra("group_id",0);//待修改，groupid可以从数据库取，不需要记录在detailitem
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(int position) {
+
+            }
+
+            @Override
+            public void onDeleteClick(int position) {
+                detailList.remove(position);
+                detailAdapter.notifyDataSetChanged();
+            }
+        });
 
         search_area = (ConstraintLayout)findViewById(R.id.search_area);
         search_area.setOnClickListener(new View.OnClickListener() {
@@ -124,6 +152,39 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
 
+        edit = (TextView)findViewById(R.id.edit);
+        edit.setOnClickListener(new View.OnClickListener() {
+            boolean flag = false;
+            @Override
+            public void onClick(View view) {
+                flag = !flag;
+                if(flag) {  //编辑状态中
+                    ImageView delete = (ImageView)findViewById(R.id.delete);
+                    ImageView right_icon = (ImageView)findViewById(R.id.right_icon2);
+                    delete.setVisibility(View.VISIBLE);
+                    right_icon.setVisibility(View.GONE);
+                    edit.setText("完成");
+                }
+                else {   //退出编辑
+                    if(!detailList.isEmpty()) {
+                        ImageView delete = (ImageView)findViewById(R.id.delete);
+                        ImageView right_icon = (ImageView)findViewById(R.id.right_icon2);
+                        delete.setVisibility(View.GONE);
+                        right_icon.setVisibility(View.VISIBLE);
+                    }
+                    edit.setText("编辑");
+                }
+            }
+        });
+
+//        ImageView delete = (ImageView)findViewById(R.id.delete);
+//        delete.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
+
         ImageView add = (ImageView)findViewById(R.id.add);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,7 +194,7 @@ public class DetailsActivity extends AppCompatActivity {
                 details_page.setVisibility(View.GONE);
                 choose_page.setVisibility(View.VISIBLE);
                 varietyList.clear();
-                switch (title) {
+                switch (group_title) {
                     case "所有":
                         for(variety v:accountList) {
                             varietyList.add(v);

@@ -80,7 +80,7 @@ public class GroupListActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         grouplist_init();
-        Detail_item item = new Detail_item(R.mipmap.ic_launcher_round,"常规邮箱","Jill");
+        Detail_item item = new Detail_item(1,R.mipmap.ic_launcher_round,"常规邮箱","常规邮箱","Jill");
         recentList.add(item);
 
         group_recyclerview=(RecyclerView)findViewById(R.id.group_RecyclerView);

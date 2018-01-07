@@ -25,12 +25,14 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder
         ImageView detail_icon;
         TextView detail_title;
         TextView detail_username;
+        ImageView delete;
         public ViewHolder(View view)
         {
             super(view);
             detail_icon=(ImageView)view.findViewById(R.id.detail_icon);
             detail_title=(TextView)view.findViewById(R.id.detail_title);
             detail_username=(TextView)view.findViewById(R.id.detail_username);
+            delete=(ImageView) view.findViewById(R.id.delete);
         }
     }
     @Override
@@ -41,12 +43,20 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder
         return holder;
     }
     @Override
-    public void onBindViewHolder(final DetailAdapter.ViewHolder holder, int position)
+    public void onBindViewHolder(final DetailAdapter.ViewHolder holder, final int position)
     {
         Detail_item record=records.get(position);
         holder.detail_icon.setImageResource(record.getDetail_icon());
         holder.detail_username.setText(record.getDetail_username());
         holder.detail_title.setText(record.getDetail_title());
+
+//        holder.delete.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                records.remove(position);
+//            }
+//        });
+
         if(mOnItemClickListener!=null)
         {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -63,6 +73,13 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder
                     return false;
                 }
             });
+
+            holder.delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mOnItemClickListener.onDeleteClick(holder.getAdapterPosition());
+                }
+            });
         }
     }
 
@@ -75,6 +92,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder
     public interface OnItemClickListener{
         void onClick(int position);
         void onLongClick(int position);
+        void onDeleteClick(int position);
     }
     public void setOnItemClickListener(DetailAdapter.OnItemClickListener a){
         mOnItemClickListener=a;
