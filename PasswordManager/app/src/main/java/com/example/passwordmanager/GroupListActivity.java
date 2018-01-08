@@ -55,6 +55,15 @@ public class GroupListActivity extends AppCompatActivity {
                     recent_page.setVisibility(View.VISIBLE);
                     setting_page.setVisibility(View.GONE);
                     titlebar.setText("最近查看");
+//                    此处排序,asc desc
+                    recentList.clear();
+                    List<Password> records = DataSupport.order("recent_time desc").find(Password.class);
+                    for(Password record :records)
+                    {
+                        Detail_item detail_item = new Detail_item(record.getBaseObjId(),record.getIcon(),record.getType(), record.getTitle(), record.getAcount());
+                        recentList.add(detail_item);
+                    }
+                    recentAdapter.notifyDataSetChanged();
                     return true;
                 case R.id.navigation_setting:
 //                    mTextMessage.setText(R.string.title_notifications);
@@ -101,8 +110,9 @@ public class GroupListActivity extends AppCompatActivity {
 
         getNum();
         grouplist_init();
-        Detail_item item = new Detail_item(1,R.mipmap.ic_launcher_round,"常规邮箱","常规邮箱","Jill");
-        recentList.add(item);
+//        测试
+//        Detail_item item = new Detail_item(1,R.mipmap.ic_launcher_round,"常规邮箱","常规邮箱","Jill");
+//        recentList.add(item);
 
         group_recyclerview=(RecyclerView)findViewById(R.id.group_RecyclerView);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
