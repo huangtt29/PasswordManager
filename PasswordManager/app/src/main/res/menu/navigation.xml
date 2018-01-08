@@ -3,17 +3,17 @@
 
     <item
         android:id="@+id/navigation_group"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@mipmap/grouplist1"
         android:title="分组" />
 
     <item
         android:id="@+id/navigation_recent"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@mipmap/recent1"
         android:title="最常查看" />
 
     <item
         android:id="@+id/navigation_setting"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@mipmap/setting1"
         android:title="设置" />
 
 </menu>

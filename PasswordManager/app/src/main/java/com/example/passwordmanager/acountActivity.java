@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -27,6 +30,28 @@ public class acountActivity extends AppCompatActivity {
     private TextView ac_password;
     private TextView ac_name;
     private ImageView ac_icon;
+    private TextView ac_desc;
+    private TextView ac_merchant;
+    private ImageView showPassword;
+
+    void getDetailsFromDB() {
+        List<Password> list= DataSupport.where("id = ?",String.valueOf(pass_id)).find(Password.class);
+        for(Password p :list)
+        {
+            Log.d("test", "onCreate: "+p.getBaseObjId());
+            titlebar.setText(p.getType());
+            ac_title.setText(p.getTitle());
+            ac_name.setText(p.getAcount());
+            ac_password.setText(p.getPassword());
+            ac_desc.setText(p.getDecription());
+            ac_icon.setImageResource(p.getIcon());
+            group_id = p.getGroup_id();
+            if(group_id == 2) {
+                ac_merchant.setText(p.getMerchant());
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,29 +72,13 @@ public class acountActivity extends AppCompatActivity {
         ac_password = (TextView)findViewById(R.id.ac_password);//
         ac_name = (TextView)findViewById(R.id.account);//account
         TextView desc_t = (TextView)findViewById(R.id.desc_t);
-        TextView ac_desc = (TextView)findViewById(R.id.ac_desc);//description
+        ac_desc = (TextView)findViewById(R.id.ac_desc);//description
         TextView merchant_t = (TextView)findViewById(R.id.merchant_t);
-        TextView ac_merchant = (TextView)findViewById(R.id.ac_merchant);//merchant
+        ac_merchant = (TextView)findViewById(R.id.ac_merchant);//merchant
         ac_icon = (ImageView)findViewById(R.id.account_icon);//icon
 
         ///////////////////////////////////////数据库取信息显示
-
-        List<Password> list= DataSupport.where("id = ?",String.valueOf(pass_id)).find(Password.class);
-        for(Password p :list)
-        {
-            Log.d("test", "onCreate: "+p.getBaseObjId());
-            titlebar.setText(p.getType());
-            ac_title.setText(p.getTitle());
-            ac_name.setText(p.getAcount());
-            ac_password.setText(p.getPassword());
-            ac_desc.setText(p.getDecription());
-            ac_icon.setImageResource(R.mipmap.ic_launcher_round);
-            group_id = p.getGroup_id();
-            if(group_id == 2) {
-                ac_merchant.setText(p.getMerchant());
-            }
-        }
-
+        getDetailsFromDB();
         /////////////////////////////
 
         group_title_tv.setText(group_title);
@@ -84,11 +93,11 @@ public class acountActivity extends AppCompatActivity {
             desc_t.setLayoutParams(layout);
         }
 
-
-
         group_title_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent();
+                setResult(RESULT_OK,intent);
                 finish();
             }
         });
@@ -102,6 +111,22 @@ public class acountActivity extends AppCompatActivity {
                 startActivityForResult(intent,2);
             }
         });
+
+        showPassword = (ImageView) findViewById(R.id.showPassword);
+        showPassword.setOnClickListener(new View.OnClickListener() {
+            boolean isVisible = false;
+            @Override
+            public void onClick(View view) {
+                isVisible = !isVisible;
+                if(isVisible) {
+                    ac_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    showPassword.setImageResource(R.mipmap.lock);
+                } else {
+                    ac_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    showPassword.setImageResource(R.mipmap.unlock);
+                }
+            }
+        });
     }
 
     @Override
@@ -110,18 +135,23 @@ public class acountActivity extends AppCompatActivity {
             case 2:
                 if(resultCode == RESULT_OK) {
                     ///数据库操作，刷新信息页面
-                    pass_id = data.getLongExtra("pass_id",-1);
-                    List<Password> list= DataSupport.where("id = ?",String.valueOf(pass_id)).find(Password.class);
-                    for(Password p :list)
-                    {
-                        Log.d("test", "onCreate: "+p.getBaseObjId());
-                        titlebar.setText(p.getType());
-                        ac_title.setText(p.getTitle());
-                        ac_name.setText(p.getAcount());
-                        ac_password.setText(p.getPassword());
-                        ac_icon.setImageResource(R.mipmap.ic_launcher_round);
-                        group_id = p.getGroup_id();
-                    }
+                    getDetailsFromDB();
+//                    pass_id = data.getLongExtra("pass_id",-1);
+//                    List<Password> list= DataSupport.where("id = ?",String.valueOf(pass_id)).find(Password.class);
+//                    for(Password p :list)
+//                    {
+//                        Log.d("test", "onCreate: "+p.getBaseObjId());
+//                        titlebar.setText(p.getType());
+//                        ac_title.setText(p.getTitle());
+//                        ac_name.setText(p.getAcount());
+//                        ac_password.setText(p.getPassword());
+//                        ac_icon.setImageResource(R.mipmap.ic_launcher_round);
+//                        ac_desc.setText(p.getDecription());
+//                        group_id = p.getGroup_id();
+//                        if(group_id == 2) {
+//                            ac_merchant.setText(p.getMerchant());
+//                        }
+//                    }
                 }
         }
     }

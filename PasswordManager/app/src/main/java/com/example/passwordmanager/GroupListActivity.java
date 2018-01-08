@@ -32,6 +32,9 @@ public class GroupListActivity extends AppCompatActivity {
     private RecyclerView setting_recyclerview;
     private GroupAdapter groupAdapter;
     private DetailAdapter recentAdapter;
+    private String[] title = {"所有","账户","邮箱","钱包"};
+    private int[] icon = {R.mipmap.all,R.mipmap.account,R.mipmap.mail,R.mipmap.wallet};
+    private int[] num = {0,0,0,0};
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -65,15 +68,25 @@ public class GroupListActivity extends AppCompatActivity {
         }
     };
 
+    private void getNum() {
+        List<Password> r1 = DataSupport.where("group_id=?" , String.valueOf(0)).find(Password.class);
+        int account_num = r1.size();
+        List<Password> r2 = DataSupport.where("group_id=?" , String.valueOf(1)).find(Password.class);
+        int mail_num = r2.size();
+        List<Password> r3 = DataSupport.where("group_id=?" , String.valueOf(2)).find(Password.class);
+        int wallet_num = r3.size();
+        int all_num = account_num+mail_num+wallet_num;
+        num[0] = all_num;
+        num[1] = account_num;
+        num[2] = mail_num;
+        num[3] = wallet_num;
+    }
+
     private void grouplist_init() {
-        String[] title = {"所有","账户","邮箱","钱包","其他"};
-        int[] icon = {R.mipmap.all,R.mipmap.account,R.mipmap.mail,R.mipmap.wallet,R.mipmap.other};
-        for(int i = 0; i < 5; i++) {
+        for(int i = 0; i < 4; i++) {
             int count=0;
-//            List<Password> passwordList=DataSupport.where("group_id = ?",String.valueOf(i)).find(Password.class);
-//            count=passwordList.size();
             Log.d("count", "grouplist_init: "+count);
-            Grouping_item item = new Grouping_item(icon[i],title[i],0);
+            Grouping_item item = new Grouping_item(icon[i],title[i],num[i]);
             groupList.add(item);
         }
     }
@@ -86,6 +99,7 @@ public class GroupListActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        getNum();
         grouplist_init();
         Detail_item item = new Detail_item(1,R.mipmap.ic_launcher_round,"常规邮箱","常规邮箱","Jill");
         recentList.add(item);
@@ -113,7 +127,7 @@ public class GroupListActivity extends AppCompatActivity {
                 String title=groupList.get(position).getGrouping_title();
                 Intent intent = new Intent(GroupListActivity.this, DetailsActivity.class);
                 intent.putExtra("title",title);
-                startActivity(intent);
+                startActivityForResult(intent,1);
             }
 
             @Override
@@ -124,7 +138,18 @@ public class GroupListActivity extends AppCompatActivity {
 
     }
 
-
-
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 1:
+                if(resultCode == RESULT_OK) {
+                    getNum();
+                    for(int i = 0; i < 4; i ++) {
+                        groupList.get(i).setGrouping_num(num[i]);
+                    }
+                    groupAdapter.notifyDataSetChanged();
+                }
+                break;
+        }
+    }
 }

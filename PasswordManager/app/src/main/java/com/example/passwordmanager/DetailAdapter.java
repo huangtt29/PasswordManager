@@ -1,5 +1,6 @@
 package com.example.passwordmanager;
 
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,19 +21,22 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder
     {
         records=records_;
     }
+    public boolean isDeleteMode = false;
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         ImageView detail_icon;
         TextView detail_title;
         TextView detail_username;
-        ImageView delete;
+        ImageView deleteBtn;
+        ImageView rightIcon;
         public ViewHolder(View view)
         {
             super(view);
             detail_icon=(ImageView)view.findViewById(R.id.detail_icon);
             detail_title=(TextView)view.findViewById(R.id.detail_title);
             detail_username=(TextView)view.findViewById(R.id.detail_username);
-            delete=(ImageView) view.findViewById(R.id.delete);
+            deleteBtn=(ImageView) view.findViewById(R.id.delete);
+            rightIcon=(ImageView)view.findViewById(R.id.right_icon2);
         }
     }
     @Override
@@ -49,13 +53,13 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder
         holder.detail_icon.setImageResource(record.getDetail_icon());
         holder.detail_username.setText(record.getDetail_username());
         holder.detail_title.setText(record.getDetail_title());
-
-//        holder.delete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                records.remove(position);
-//            }
-//        });
+        if(isDeleteMode) {
+            holder.deleteBtn.setVisibility(View.VISIBLE);
+            holder.rightIcon.setVisibility(View.GONE);
+        } else {
+            holder.deleteBtn.setVisibility(View.GONE);
+            holder.rightIcon.setVisibility(View.VISIBLE);
+        }
 
         if(mOnItemClickListener!=null)
         {
@@ -74,7 +78,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder
                 }
             });
 
-            holder.delete.setOnClickListener(new View.OnClickListener() {
+            holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mOnItemClickListener.onDeleteClick(holder.getAdapterPosition());
