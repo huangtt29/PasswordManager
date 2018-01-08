@@ -72,7 +72,7 @@
         
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
             android:padding="20dp"
             android:background="#FFFFFF"
             android:layout_marginTop="30dp">
@@ -95,7 +95,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/account_title"
-                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="30dp"
                 android:textColor="#000000"/>
         </RelativeLayout>
 
@@ -103,7 +104,7 @@
             android:id="@+id/ac_layout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:padding="20dp"
             android:background="#FFFFFF"
             android:layout_marginTop="20dp">
             <TextView
@@ -135,9 +136,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lines="1"
+                android:inputType="textPassword"
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@+id/pass_t"
                 android:layout_marginLeft="50dp"/>
+            <ImageView
+                android:id="@+id/showPassword"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:src="@mipmap/unlock"/>
             <TextView
                 android:id="@+id/ac_merchant"
                 android:layout_width="wrap_content"

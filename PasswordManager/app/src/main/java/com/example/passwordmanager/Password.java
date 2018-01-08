@@ -3,6 +3,8 @@ package com.example.passwordmanager;
 import org.litepal.annotation.Encrypt;
 import org.litepal.crud.DataSupport;
 
+import java.util.Date;
+
 
 /**
  * Created by HTT on 2018/1/6.
@@ -15,6 +17,8 @@ public class Password extends DataSupport{
     private String decription;
     private String merchant;
     private int group_id;
+    private Date recent_time;
+    private int icon;
 //    private long baseObjId;
     @Encrypt(algorithm = "AES")
     private String password;
@@ -25,7 +29,7 @@ public class Password extends DataSupport{
     }
 
     public Password(){};
-    public Password(String type, String title, String acount, String decription, String merchant, int group_id, String password)
+    public Password(String type, String title, String acount, String decription, String merchant, int group_id, String password,int icon)
     {
         this.type = type;
         this.acount=acount;
@@ -34,6 +38,8 @@ public class Password extends DataSupport{
         this.group_id=group_id;
         this.password=password;
         this.merchant=merchant;
+        this.icon = icon;
+        recent_time = new  Date(System.currentTimeMillis());
     }
 
     public String getType() {
@@ -54,6 +60,14 @@ public class Password extends DataSupport{
 
     public String getTitle() {
         return title;
+    }
+
+    public int getIcon() {
+        return icon;
+    }
+
+    public Date getRecent_time() {
+        return recent_time;
     }
 
     public void setTitle(String title) {
@@ -93,5 +107,11 @@ public class Password extends DataSupport{
         this.password = password;
     }
 
+    public void setIcon(int icon) {
+        this.icon = icon;
+    }
 
+    public void setRecent_time(Date recent_time) {
+        this.recent_time = recent_time;
+    }
 }

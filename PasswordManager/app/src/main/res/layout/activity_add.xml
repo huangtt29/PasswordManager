@@ -23,11 +23,12 @@
               android:layout_height="20dp"
               android:text="取消"
               android:textColor="@color/green"
-              android:background="@null"/>
+              android:background="@null"
+              android:textSize="15dp"/>
 
             <TextView
                 android:id="@+id/add_type"
-                android:layout_width="250dp"
+                android:layout_width="260dp"
                 android:layout_height="wrap_content"
                 android:text="所有"
                 android:textColor="#000000"
@@ -62,7 +63,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
             android:padding="20dp"
             android:background="#FFFFFF"
             android:layout_marginTop="30dp">
@@ -74,23 +75,24 @@
                 android:layout_alignParentTop="true" />
             <EditText
                 android:id="@+id/add_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="200dp"
+                android:layout_height="20dp"
                 android:layout_marginLeft="30dp"
                 android:layout_toRightOf="@+id/add_icon"
                 android:layout_alignParentTop="true"
                 android:textColor="#000000"
-                android:textSize="16dp"
+                android:textSize="15dp"
                 android:background="@null"/>
             <EditText
                 android:id="@+id/add_acount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="200dp"
+                android:layout_height="20dp"
                 android:layout_alignLeft="@+id/add_title"
-                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="30dp"
                 android:textColor="#000000"
                 android:hint="用户名"
-                android:textSize="16dp"
+                android:textSize="15dp"
                 android:background="@null"/>
         </RelativeLayout>
 
@@ -98,7 +100,7 @@
             android:id="@+id/add_layout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:padding="20dp"
             android:background="#FFFFFF"
             android:layout_marginTop="20dp">
             <TextView
@@ -106,6 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="密码"
+                android:textSize="15dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true" />
             <TextView
@@ -116,6 +119,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="50dp"
                 android:text="商户"
+                android:textSize="15dp"
                 android:visibility="gone"/>
             <TextView
                 android:id="@+id/desc_t2"
@@ -124,101 +128,43 @@
                 android:text="描述"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="50dp"/>
+                android:layout_marginTop="50dp"
+                android:textSize="15dp"/>
             <EditText
                 android:id="@+id/add_password"
                 android:hint="密码"
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:lines="1"
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@+id/pass_t2"
                 android:layout_marginLeft="50dp"
-                android:textSize="16dp"
+                android:textSize="15dp"
                 android:background="@null"/>
             <EditText
                 android:id="@+id/add_merchant"
                 android:hint="商户"
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:lines="1"
                 android:layout_alignLeft="@+id/add_password"
                 android:layout_alignTop="@+id/merchant_t2"
                 android:visibility="gone"
-                android:textSize="16dp"
+                android:textSize="15dp"
                 android:background="@null"/>
             <EditText
                 android:id="@+id/add_description"
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:lines="3"
                 android:layout_alignLeft="@+id/add_password"
                 android:layout_alignTop="@+id/desc_t2"
                 android:hint="描述"
-                android:textSize="16dp"
-                android:background="@null"/>
+                android:textSize="15dp"
+                android:background="@null"
+                android:gravity="top"/>
         </RelativeLayout>
 
     </LinearLayout>
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="vertical">-->
-
-        <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/add_icon"/>-->
-
-        <!--<Button-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/add_cancelBtn"-->
-            <!--android:text="取消"/>-->
-
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/add_type"-->
-            <!--android:text="TYPE"/>-->
-
-        <!--<Button-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/add_saveBtn"-->
-            <!--android:text="保存"/>-->
-
-        <!--<EditText-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/add_title"-->
-            <!--android:text="add_title"/>-->
-
-        <!--<EditText-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/add_acount"-->
-            <!--android:hint="用户名"/>-->
-
-        <!--<EditText-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/add_password"-->
-            <!--android:hint="密码"/>-->
-
-        <!--<EditText-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/add_description"-->
-            <!--android:hint="描述"/>-->
-
-        <!--<EditText-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/add_merchant"-->
-            <!--android:hint="商户"/>-->
-    <!--</LinearLayout>-->
-
-
 
 </android.support.constraint.ConstraintLayout>

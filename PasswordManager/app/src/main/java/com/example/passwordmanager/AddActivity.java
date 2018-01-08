@@ -60,10 +60,10 @@ public class AddActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         mode = intent.getIntExtra("mode",0);
+        icon = intent.getIntExtra("icon",R.mipmap.ic_launcher_round);
         Log.d("mode", "onCreate: "+mode);
         if(mode == 0) {
             type = intent.getStringExtra("type");
-            icon = intent.getIntExtra("icon",R.mipmap.ic_launcher_round);
             add_type.setText(type);
             add_icon.setImageResource(icon);
             add_title.setText(type);   ///////title默认等于type
@@ -104,10 +104,12 @@ public class AddActivity extends AppCompatActivity {
             List<Password> list= DataSupport.where("id = ?",String.valueOf(pass_id)).find(Password.class);
             for(Password p :list)
             {
+                add_type.setText(p.getType());
                 add_title.setText(p.getTitle());
                 add_acount.setText(p.getAcount());
                 add_password.setText(p.getPassword());
                 add_description.setText(p.getDecription());
+                add_icon.setImageResource(icon);
                 group_id = p.getGroup_id();
                 if(group_id==2) {
                     add_merchant.setText(p.getMerchant());
@@ -139,7 +141,7 @@ public class AddActivity extends AppCompatActivity {
 
 //                    Log.d("type", "onClick: "+type);
 //                  加入数据库
-                    Password record=new Password(type,title,acount,description,merchant, group_id , password);
+                    Password record=new Password(type,title,acount,description,merchant, group_id , password,icon);
                     record.save();
 
                 }
@@ -153,7 +155,7 @@ public class AddActivity extends AppCompatActivity {
 
 //                    List<Password> list= DataSupport.where("id = ?",String.valueOf(pass_id)).find(Password.class);
 
-                    Password record=new Password(type,title,acount,description,merchant, group_id , password);
+                    Password record=new Password(type,title,acount,description,merchant, group_id , password,icon);
                     record.updateAll("id =? ",String.valueOf(pass_id));
 
                 }
@@ -172,6 +174,8 @@ public class AddActivity extends AppCompatActivity {
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent=new Intent();
+                                setResult(RESULT_CANCELED,intent);
                                 finish();
                             }
                         })

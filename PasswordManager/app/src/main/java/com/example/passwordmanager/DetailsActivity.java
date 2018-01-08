@@ -1,5 +1,6 @@
 package com.example.passwordmanager;
 
+import android.content.Context;
 import android.content.Intent;
 
 import android.media.Image;
@@ -15,7 +16,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,8 +34,10 @@ import java.util.List;
 public class DetailsActivity extends AppCompatActivity {
 
     private DetailAdapter detailAdapter;
+    private DetailAdapter searchAdapter;
     private VarietyAdapter varietyAdapter;
     private List<Detail_item> detailList=new ArrayList<>();
+    private List<Detail_item> searchList=new ArrayList<>();
     private List<variety> varietyList = new ArrayList<>();
     private List<variety> accountList = new ArrayList<>();
     private List<variety> mailList = new ArrayList<>();
@@ -41,7 +47,7 @@ public class DetailsActivity extends AppCompatActivity {
     private int group_id;
     private String group_title;
     private TextView edit;
-
+    private EditText search_et;
     private String title;
     private LinearLayout details_page;
     private LinearLayout choose_page;
@@ -65,34 +71,9 @@ public class DetailsActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details);
-
-        details_page = (LinearLayout)findViewById(R.id.details_page);
-        choose_page = (LinearLayout)findViewById(R.id.chooseVariety_page);
-
-        RecyclerView details_RecyclerView=(RecyclerView)findViewById(R.id.details_RecyclerView);
-        LinearLayoutManager linearLayoutManager1=new LinearLayoutManager(this);
-        details_RecyclerView.setLayoutManager(linearLayoutManager1);
-        detailAdapter=new DetailAdapter(detailList);
-        details_RecyclerView.setAdapter(detailAdapter);
-
-        RecyclerView variety_RecyclerView = (RecyclerView)findViewById(R.id.variety_recyclerView);
-        LinearLayoutManager linearLayoutManager2=new LinearLayoutManager(this);
-        variety_RecyclerView.setLayoutManager(linearLayoutManager2);
-        varietyAdapter = new VarietyAdapter(varietyList);
-        variety_RecyclerView.setAdapter(varietyAdapter);
-
-        variety_init();
-
-
-        titlebar = (TextView)findViewById(R.id.titlebar2);
-        group_title = getIntent().getStringExtra("title");
-        titlebar.setText(group_title);
-
+    void getPasswordsFromDB() {
         List<Password> records;
+        detailList.clear();
         if(group_title.equals("所有"))
         {
             records=DataSupport.findAll(Password.class);
@@ -111,24 +92,55 @@ public class DetailsActivity extends AppCompatActivity {
 
         for(Password p : records)
         {
-            Detail_item item = new Detail_item(p.getBaseObjId(),R.mipmap.ic_launcher_round,p.getType(), p.getTitle(),p.getAcount());
+            Detail_item item = new Detail_item(p.getBaseObjId(),p.getIcon(),p.getType(), p.getTitle(),p.getAcount());
             Log.d("id", "onCreate: "+p.getBaseObjId());
             detailList.add(item);
             detailAdapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_details);
+
+        details_page = (LinearLayout)findViewById(R.id.details_page);
+        choose_page = (LinearLayout)findViewById(R.id.chooseVariety_page);
+
+        final RecyclerView details_RecyclerView=(RecyclerView)findViewById(R.id.details_RecyclerView);
+        LinearLayoutManager linearLayoutManager1=new LinearLayoutManager(this);
+        details_RecyclerView.setLayoutManager(linearLayoutManager1);
+        detailAdapter=new DetailAdapter(detailList);
+        details_RecyclerView.setAdapter(detailAdapter);
+
+        final RecyclerView search_RecyclerView=(RecyclerView)findViewById(R.id.search_RecyclerView);
+        LinearLayoutManager linearLayoutManager3=new LinearLayoutManager(this);
+        details_RecyclerView.setLayoutManager(linearLayoutManager3);
+        searchAdapter=new DetailAdapter(searchList);
+        search_RecyclerView.setAdapter(searchAdapter);
+
+        RecyclerView variety_RecyclerView = (RecyclerView)findViewById(R.id.variety_recyclerView);
+        LinearLayoutManager linearLayoutManager2=new LinearLayoutManager(this);
+        variety_RecyclerView.setLayoutManager(linearLayoutManager2);
+        varietyAdapter = new VarietyAdapter(varietyList);
+        variety_RecyclerView.setAdapter(varietyAdapter);
+
+        variety_init();
+
+        titlebar = (TextView)findViewById(R.id.titlebar2);
+        group_title = getIntent().getStringExtra("title");
+        titlebar.setText(group_title);
+
+        getPasswordsFromDB();
 
         detailAdapter.setOnItemClickListener(new DetailAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
                 Intent intent = new Intent(DetailsActivity.this,acountActivity.class);
                 intent.putExtra("group_title",group_title);
-                //intent.putExtra("type",detailList.get(position).getDetail_type());
-                //intent.putExtra("title",detailList.get(position).getDetail_title());
-//                detailList.get(position).
-//                Log.d("passid", "onClick: "+detailList.get(position).getPass_id());
+                intent.putExtra("icon",detailList.get(position).getDetail_icon());
                 intent.putExtra("pass_id",detailList.get(position).getPass_id());
-                //intent.putExtra("group_id",0);//待修改，groupid可以从数据库取，不需要记录在detailitem
-                startActivity(intent);
+                startActivityForResult(intent,2);
             }
 
             @Override
@@ -169,6 +181,8 @@ public class DetailsActivity extends AppCompatActivity {
                 search_input.requestFocus();
                 search_cancel.setVisibility(View.VISIBLE);
                 search_area.setMaxWidth(600);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(search_input,0);
             }
         });
 
@@ -187,6 +201,41 @@ public class DetailsActivity extends AppCompatActivity {
                 search_input.setVisibility(View.GONE);
                 search_cancel.setVisibility(View.GONE);
                 search_area.setMaxWidth(700);
+                search_RecyclerView.setVisibility(View.GONE);
+                details_RecyclerView.setVisibility(View.VISIBLE);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        });
+
+        search_et = (EditText)findViewById(R.id.search_input);
+        search_et.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_SEARCH){
+                    search_RecyclerView.setVisibility(View.VISIBLE);
+                    details_RecyclerView.setVisibility(View.GONE);
+                    String input = search_et.getText().toString();
+                    List<Password> r = DataSupport.where("title = ?",String.valueOf(input)).find(Password.class);
+                    if(!r.isEmpty()) {
+                        for(Password p :r) {
+                            Detail_item item = new Detail_item(p.getBaseObjId(),p.getIcon(),p.getType(),p.getTitle(),p.getAcount());
+                            searchList.add(item);
+                        }
+                    }
+                    List<Password> r2 = DataSupport.where("acount = ?",String.valueOf(input)).find(Password.class);
+                    if(!r2.isEmpty()) {
+                        for(Password p :r2) {
+                            Detail_item item = new Detail_item(p.getBaseObjId(),p.getIcon(),p.getType(),p.getTitle(),p.getAcount());
+                            searchList.add(item);
+                        }
+                    }
+                    searchAdapter.notifyDataSetChanged();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -194,6 +243,8 @@ public class DetailsActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent();
+                setResult(RESULT_OK,intent);
                 finish();
             }
         });
@@ -205,10 +256,8 @@ public class DetailsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 flag = !flag;
                 if(flag) {  //编辑状态中
-                    ImageView delete = (ImageView)findViewById(R.id.delete);
-                    ImageView right_icon = (ImageView)findViewById(R.id.right_icon2);
-                    delete.setVisibility(View.VISIBLE);
-                    right_icon.setVisibility(View.GONE);
+                    detailAdapter.isDeleteMode = true;
+                    detailAdapter.notifyDataSetChanged();
                     edit.setText("完成");
                 }
                 else {   //退出编辑
@@ -218,6 +267,8 @@ public class DetailsActivity extends AppCompatActivity {
                         delete.setVisibility(View.GONE);
                         right_icon.setVisibility(View.VISIBLE);
                     }
+                    detailAdapter.isDeleteMode = false;
+                    detailAdapter.notifyDataSetChanged();
                     edit.setText("编辑");
                 }
             }
@@ -317,20 +368,19 @@ public class DetailsActivity extends AppCompatActivity {
 //                    {
 //
 //                    }
-                    Detail_item item = new Detail_item(record.getBaseObjId(),R.mipmap.ic_launcher_round,record.getType(), record.getTitle(), record.getAcount());
+                    Detail_item item = new Detail_item(record.getBaseObjId(),record.getIcon(),record.getType(), record.getTitle(), record.getAcount());
                     detailList.add(item);
                     detailAdapter.notifyDataSetChanged();
-                    LinearLayout details_page = (LinearLayout)findViewById(R.id.details_page);
-                    LinearLayout choose_page = (LinearLayout)findViewById(R.id.chooseVariety_page);
-
-                    details_page.setVisibility(View.VISIBLE);
-                    choose_page.setVisibility(View.GONE);
-
                 }
+                LinearLayout details_page = (LinearLayout)findViewById(R.id.details_page);
+                LinearLayout choose_page = (LinearLayout)findViewById(R.id.chooseVariety_page);
+                details_page.setVisibility(View.VISIBLE);
+                choose_page.setVisibility(View.GONE);
                 break;
 //            此处改动
-
-
+            case 2:
+                getPasswordsFromDB();
+                break;
             default:
                 break;
         }
