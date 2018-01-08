@@ -329,7 +329,7 @@ public class DetailsActivity extends AppCompatActivity {
                 }
                 break;
 //            此处改动
-            
+
 
             default:
                 break;
