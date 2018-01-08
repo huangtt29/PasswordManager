@@ -15,7 +15,7 @@ public class Password extends DataSupport{
     private String decription;
     private String merchant;
     private int group_id;
-
+//    private long baseObjId;
     @Encrypt(algorithm = "AES")
     private String password;
 
@@ -24,6 +24,7 @@ public class Password extends DataSupport{
         return super.getBaseObjId();
     }
 
+    public Password(){};
     public Password(String type, String title, String acount, String decription, String merchant, int group_id, String password)
     {
         this.type = type;
@@ -43,7 +44,7 @@ public class Password extends DataSupport{
         this.type = type;
     }
 
-    public long getGroup_id() {
+    public int getGroup_id() {
         return group_id;
     }
 
