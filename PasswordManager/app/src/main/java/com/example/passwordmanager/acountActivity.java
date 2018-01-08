@@ -52,7 +52,7 @@ public class acountActivity extends AppCompatActivity {
         TextView ac_merchant = (TextView)findViewById(R.id.ac_merchant);//merchant
         ac_icon = (ImageView)findViewById(R.id.account_icon);//icon
 
-        //////////////////////////////////测试界面//////需要数据库取信息显示
+        ///////////////////////////////////////数据库取信息显示
 
         List<Password> list= DataSupport.where("id = ?",String.valueOf(pass_id)).find(Password.class);
         for(Password p :list)
@@ -62,8 +62,12 @@ public class acountActivity extends AppCompatActivity {
             ac_title.setText(p.getTitle());
             ac_name.setText(p.getAcount());
             ac_password.setText(p.getPassword());
+            ac_desc.setText(p.getDecription());
             ac_icon.setImageResource(R.mipmap.ic_launcher_round);
             group_id = p.getGroup_id();
+            if(group_id == 2) {
+                ac_merchant.setText(p.getMerchant());
+            }
         }
 
         /////////////////////////////
@@ -72,8 +76,6 @@ public class acountActivity extends AppCompatActivity {
         if(group_id == 0 | group_id == 1) {
             merchant_t.setVisibility(View.GONE);
             ac_merchant.setVisibility(View.GONE);
-
-
         } else {
             merchant_t.setVisibility(View.VISIBLE);
             ac_merchant.setVisibility(View.VISIBLE);

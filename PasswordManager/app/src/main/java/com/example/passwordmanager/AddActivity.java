@@ -99,12 +99,6 @@ public class AddActivity extends AppCompatActivity {
             }
         } else if(mode == 1){
             pass_id = intent.getLongExtra("pass_id",0);
-            merchant_t.setVisibility(View.VISIBLE);
-            add_merchant.setVisibility(View.VISIBLE);
-            RelativeLayout.LayoutParams layout=(RelativeLayout.LayoutParams)desc_t.getLayoutParams();
-            layout.setMargins(0,200,0,0);
-            desc_t.setLayoutParams(layout);
-
             ////数据库操作，获取信息,并设置在相应控件中
             Log.d("passss", "onCreate: "+pass_id);
             List<Password> list= DataSupport.where("id = ?",String.valueOf(pass_id)).find(Password.class);
@@ -114,14 +108,22 @@ public class AddActivity extends AppCompatActivity {
                 add_acount.setText(p.getAcount());
                 add_password.setText(p.getPassword());
                 add_description.setText(p.getDecription());
-                add_merchant.setText(p.getMerchant());
+                group_id = p.getGroup_id();
+                if(group_id==2) {
+                    add_merchant.setText(p.getMerchant());
+                }
             }
         }
 
         if(group_id == 0 | group_id == 1) {
             add_merchant.setVisibility(View.GONE);
+            merchant_t.setVisibility(View.GONE);
         } else {
             add_merchant.setVisibility(View.VISIBLE);
+            merchant_t.setVisibility(View.VISIBLE);
+            RelativeLayout.LayoutParams layout=(RelativeLayout.LayoutParams)desc_t.getLayoutParams();
+            layout.setMargins(0,200,0,0);
+            desc_t.setLayoutParams(layout);
         }
 
         add_saveBtn.setOnClickListener(new View.OnClickListener() {

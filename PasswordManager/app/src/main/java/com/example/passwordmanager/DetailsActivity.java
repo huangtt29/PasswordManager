@@ -323,12 +323,13 @@ public class DetailsActivity extends AppCompatActivity {
                     LinearLayout details_page = (LinearLayout)findViewById(R.id.details_page);
                     LinearLayout choose_page = (LinearLayout)findViewById(R.id.chooseVariety_page);
 
-//                    details_page.setVisibility(View.VISIBLE);
-//                    choose_page.setVisibility(View.GONE);
+                    details_page.setVisibility(View.VISIBLE);
+                    choose_page.setVisibility(View.GONE);
 
                 }
                 break;
 //            此处改动
+            
 
             default:
                 break;
