@@ -10,8 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.litepal.crud.DataSupport;
 
@@ -32,9 +36,15 @@ public class GroupListActivity extends AppCompatActivity {
     private RecyclerView setting_recyclerview;
     private GroupAdapter groupAdapter;
     private DetailAdapter recentAdapter;
+    private Button setting_btn;
     private String[] title = {"所有","账户","邮箱","钱包"};
     private int[] icon = {R.mipmap.all,R.mipmap.account,R.mipmap.mail,R.mipmap.wallet};
     private int[] num = {0,0,0,0};
+    private LinearLayout changePassword_Layout;
+    private Button submit_btn;
+    private EditText originalPassword;
+    private EditText setnewPassword;
+    private EditText comfirmnewPassword;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -71,6 +81,16 @@ public class GroupListActivity extends AppCompatActivity {
                     recent_page.setVisibility(View.GONE);
                     setting_page.setVisibility(View.VISIBLE);
                     titlebar.setText("设置");
+
+                    setting_btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            setting_btn.setVisibility(View.GONE);
+                            changePassword_Layout.setVisibility(View.VISIBLE);
+
+                        }
+                    });
+
                     return true;
             }
             return false;
@@ -130,6 +150,59 @@ public class GroupListActivity extends AppCompatActivity {
         recent_page = (RelativeLayout)findViewById(R.id.recent_page);
         setting_page = (RelativeLayout)findViewById(R.id.setting_page);
         titlebar = (TextView)findViewById(R.id.titlebar1);
+        submit_btn=(Button)findViewById(R.id.submit_btn);
+        setting_btn=(Button)findViewById(R.id.setting_btn);
+        changePassword_Layout=(LinearLayout)findViewById(R.id.changePassword_layout);
+        originalPassword=(EditText)findViewById(R.id.origanalPassword);
+        setnewPassword=(EditText)findViewById(R.id.setnewPassword);
+        comfirmnewPassword=(EditText)findViewById(R.id.comfirmnewPassword);
+
+        submit_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String original=originalPassword.getText().toString();
+                String newPass=setnewPassword.getText().toString();
+                String comfirm=comfirmnewPassword.getText().toString();
+
+                LoginPassword newloginPassword=new LoginPassword();
+                newloginPassword.setLoginPassword(original);
+                newloginPassword.save();
+
+
+                LoginPassword loginPassword=DataSupport.findFirst(LoginPassword.class);
+                String firstpassword =loginPassword.getLoginPassword();
+
+                LoginPassword newloginPass=DataSupport.findLast(LoginPassword.class);
+                String lastpassword=newloginPass.getLoginPassword();
+                Log.d("Passwordfirst", firstpassword);
+                Log.d("Passwordlast", lastpassword);
+                if(firstpassword.equals(lastpassword))
+                {
+                    if(!newPass.equals(comfirm))
+                    {
+                        Toast.makeText(GroupListActivity.this, "Password Mismatch", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        DataSupport.deleteAll(LoginPassword.class);
+                        LoginPassword log=new LoginPassword();
+                        log.setLoginPassword(newPass);
+                        log.save();
+
+                        Toast.makeText(GroupListActivity.this, "设置成功", Toast.LENGTH_SHORT).show();
+                        setting_btn.setVisibility(View.VISIBLE);
+                        changePassword_Layout.setVisibility(View.GONE);
+                    }
+
+                }
+                else
+                {
+                    Toast.makeText(GroupListActivity.this, "密码不正确", Toast.LENGTH_SHORT).show();
+                }
+
+
+            }
+        });
 
         groupAdapter.setOnItemClickListener(new GroupAdapter.OnItemClickListener() {
             @Override
