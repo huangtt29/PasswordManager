@@ -29,6 +29,7 @@ import android.widget.Toast;
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DetailsActivity extends AppCompatActivity {
@@ -115,10 +116,14 @@ public class DetailsActivity extends AppCompatActivity {
 
         final RecyclerView search_RecyclerView=(RecyclerView)findViewById(R.id.search_RecyclerView);
         LinearLayoutManager linearLayoutManager3=new LinearLayoutManager(this);
-        details_RecyclerView.setLayoutManager(linearLayoutManager3);
+        search_RecyclerView.setLayoutManager(linearLayoutManager3);
         searchAdapter=new DetailAdapter(searchList);
         search_RecyclerView.setAdapter(searchAdapter);
 
+//        测试
+//        Detail_item item = new Detail_item(p.getBaseObjId(),p.getIcon(),p.getType(),p.getTitle(),p.getAcount());
+//        searchList.add(item);
+//
         RecyclerView variety_RecyclerView = (RecyclerView)findViewById(R.id.variety_recyclerView);
         LinearLayoutManager linearLayoutManager2=new LinearLayoutManager(this);
         variety_RecyclerView.setLayoutManager(linearLayoutManager2);
@@ -136,6 +141,13 @@ public class DetailsActivity extends AppCompatActivity {
         detailAdapter.setOnItemClickListener(new DetailAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
+                long id=detailList.get(position).getPass_id();
+                List<Password> list=DataSupport.where("id = ?",String.valueOf(id)).find(Password.class);
+                for(Password p: list)
+                {
+                    p.setRecent_time(new Date(System.currentTimeMillis()));
+                    p.save();
+                }
                 Intent intent = new Intent(DetailsActivity.this,acountActivity.class);
                 intent.putExtra("group_title",group_title);
                 intent.putExtra("icon",detailList.get(position).getDetail_icon());
@@ -183,6 +195,8 @@ public class DetailsActivity extends AppCompatActivity {
                 search_area.setMaxWidth(600);
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(search_input,0);
+
+
             }
         });
 
@@ -215,27 +229,85 @@ public class DetailsActivity extends AppCompatActivity {
                 if (i == EditorInfo.IME_ACTION_SEARCH){
                     search_RecyclerView.setVisibility(View.VISIBLE);
                     details_RecyclerView.setVisibility(View.GONE);
+
                     String input = search_et.getText().toString();
                     List<Password> r = DataSupport.where("title = ?",String.valueOf(input)).find(Password.class);
                     if(!r.isEmpty()) {
                         for(Password p :r) {
-                            Detail_item item = new Detail_item(p.getBaseObjId(),p.getIcon(),p.getType(),p.getTitle(),p.getAcount());
-                            searchList.add(item);
+                            Boolean isok=true;
+                            for(int j=0;j<searchList.size();j++)
+                            {
+                                if(searchList.get(j).getPass_id()==p.getBaseObjId())
+                                {
+                                    isok=false;break;
+                                }
+
+                            }
+                            if(isok)
+                            {
+                                Detail_item item = new Detail_item(p.getBaseObjId(),p.getIcon(),p.getType(),p.getTitle(),p.getAcount());
+                                searchList.add(item);
+                            }
+
                         }
                     }
                     List<Password> r2 = DataSupport.where("acount = ?",String.valueOf(input)).find(Password.class);
                     if(!r2.isEmpty()) {
                         for(Password p :r2) {
-                            Detail_item item = new Detail_item(p.getBaseObjId(),p.getIcon(),p.getType(),p.getTitle(),p.getAcount());
-                            searchList.add(item);
+                            Boolean isok=true;
+                            for(int j=0;j<searchList.size();j++)
+                            {
+                                if(searchList.get(j).getPass_id()==p.getBaseObjId())
+                                {
+                                    isok=false;break;
+                                }
+
+                            }
+                            if(isok)
+                            {
+                                Detail_item item = new Detail_item(p.getBaseObjId(),p.getIcon(),p.getType(),p.getTitle(),p.getAcount());
+                                searchList.add(item);
+                            }
+
                         }
                     }
                     searchAdapter.notifyDataSetChanged();
+
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
+
+
                     return true;
                 }
                 return false;
+            }
+        });
+
+        searchAdapter.setOnItemClickListener(new DetailAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(int position) {
+                long id=detailList.get(position).getPass_id();
+                List<Password> list=DataSupport.where("id = ?",String.valueOf(id)).find(Password.class);
+                for(Password p: list)
+                {
+                    p.setRecent_time(new Date(System.currentTimeMillis()));
+                    p.save();
+                }
+                Intent intent = new Intent(DetailsActivity.this,acountActivity.class);
+                intent.putExtra("group_title",group_title);
+                intent.putExtra("icon",detailList.get(position).getDetail_icon());
+                intent.putExtra("pass_id",detailList.get(position).getPass_id());
+                startActivityForResult(intent,2);
+            }
+
+            @Override
+            public void onLongClick(int position) {
+
+            }
+
+            @Override
+            public void onDeleteClick(int position) {
+
             }
         });
 
@@ -351,23 +423,7 @@ public class DetailsActivity extends AppCompatActivity {
         switch(requstCode) {
             case 1:
                 if(resultCode == RESULT_OK) {
-//                    Log.d("testt", "onActivityResult: ");
-
                     Password record = DataSupport.findLast(Password.class);
-//                    Log.d("testtt", "onActivityResult: "+record.getGroup_id());
-//                    if(record.getGroup_id()==0)
-//                    {
-//                        Log.d("testt", "onActivityResult: "+record.getAcount());
-//
-//                    }
-//                    else if(record.getGroup_id()==1)
-//                    {
-//
-//                    }
-//                    else
-//                    {
-//
-//                    }
                     Detail_item item = new Detail_item(record.getBaseObjId(),record.getIcon(),record.getType(), record.getTitle(), record.getAcount());
                     detailList.add(item);
                     detailAdapter.notifyDataSetChanged();
