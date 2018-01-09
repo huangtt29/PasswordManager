@@ -79,12 +79,42 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:visibility="gone">
-            <android.support.v7.widget.RecyclerView
+            <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/setting_RecyclerView">
+                android:text="设置"
+                android:background="@null"
+                android:id="@+id/setting_btn"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/changePassword_layout"
+                android:visibility="gone">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="输入原密码"
+                    android:id="@+id/origanalPassword"
+                    />
 
-            </android.support.v7.widget.RecyclerView>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="输入新密码"
+                    android:id="@+id/setnewPassword"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="再次输入新密码"
+                    android:id="@+id/comfirmnewPassword"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="提交"
+                    android:id="@+id/submit_btn"/>
+            </LinearLayout>
         </RelativeLayout>
 
     </FrameLayout>
