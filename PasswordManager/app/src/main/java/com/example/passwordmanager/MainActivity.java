@@ -57,19 +57,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 //-------此处需要读取数据库看是否是第一次登录，根据是否是第一次登录选择mode。 mode=SET_NEWPASSWORD;mode=PASSWORD_SETED;
 //        和设置可见或不可见
-        DataSupport.deleteAll(LoginPassword.class);
+//        DataSupport.deleteAll(LoginPassword.class);
+        List<LoginPassword> list=DataSupport.findAll(LoginPassword.class);
 
+        for(LoginPassword l:list)
+        {
+            mode=PASSWORD_SETED;
+            String passwordInDB =l.getLoginPassword();
+            Log.d("Passwordorigal", passwordInDB);
+            break;
+        }
         if(mode==PASSWORD_SETED)
         {
-            LoginPassword loginPassword=DataSupport.findFirst(LoginPassword.class);
-            String passwordInDB =loginPassword.getLoginPassword();
-            Log.d("hello", "onCreate: "+passwordInDB);
-//            Toast.makeText(this, passwordInDB, Toast.LENGTH_SHORT).show();
-
+            passwordSeted_page.setVisibility(View.VISIBLE);
+            setPassword_page.setVisibility(View.GONE);
         }
-
-
-
 
     }
     @Override
@@ -87,8 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     else if(!newPasswordText.equals(comfirmPasswordText))
                     {
-                        Log.d("hello", newPasswordText);
-                        Log.d("hello",comfirmPasswordText);
+
                         Toast.makeText(this, "密码不匹配", Toast.LENGTH_SHORT).show();
                     }
                     else
@@ -101,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         LoginPassword loginPassword=new LoginPassword();
                         loginPassword.setLoginPassword(password);
                         loginPassword.save();
-
 
                         mode=PASSWORD_SETED;
 
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                                                startActivity(sendMail);
                                                 mail = mail+".tw";
                                                         Intent intent = new Intent(Intent.ACTION_SEND);
-                                                        
+
                                                 // i.setType("text/plain"); //模拟器请使用这行
                                                 intent.setType("message/rfc822"); // 真机上使用这行
                                                 intent.putExtra(Intent.EXTRA_EMAIL, new String[] { mail });
@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 else if(mode==PASSWORD_SETED)
                 {
                     String inputpassword=passwordEdit.getText().toString();
-//                    Log.d("hello", inputpassword);
+
                     if(inputpassword.equals(password))
                     {
                         Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
@@ -170,7 +170,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     }
                     else
-                        Toast.makeText(this, "密码不正确，请再次输入", Toast.LENGTH_SHORT).show();
+                    {
+                        LoginPassword loginPassword=new LoginPassword();
+                        loginPassword.setLoginPassword(inputpassword);
+                        loginPassword.save();
+
+                        String firstpassword=DataSupport.findFirst(LoginPassword.class).getLoginPassword();
+                        String lastpassword=DataSupport.findLast(LoginPassword.class).getLoginPassword();
+                        Log.d("passwordfirst",firstpassword);
+                        Log.d("passwordlast", lastpassword);
+                        if(lastpassword.equals(firstpassword))
+                        {
+                            Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
+                            Intent intent=new Intent(MainActivity.this,GroupListActivity.class);
+                            startActivity(intent);
+                            DataSupport.deleteAll(LoginPassword.class);
+
+                            LoginPassword log=new LoginPassword();
+                            log.setLoginPassword(inputpassword);
+                            log.save();
+
+                        }
+                        else {
+                            Toast.makeText(this, "密码不正确，请再次输入", Toast.LENGTH_SHORT).show();
+                            DataSupport.deleteAll(LoginPassword.class,"loginPassword=?",lastpassword);
+
+                        }
+
+                    }
+
+
                 }
 
                 break;
