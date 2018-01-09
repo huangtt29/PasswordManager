@@ -8,17 +8,16 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="如果您忘记了该主密码，您将无法进入本软件，同时我们也无法帮助到您。安全着想，我们建议您备份该主密码到您的邮箱上！"/>
-    <EditText
-        android:id="@+id/mail_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:hint="在这里输入您的邮箱"
-        android:background="@drawable/password_input"/>
+        android:text="请您将刚刚设置的密码备份至您的邮箱，这是您唯一需要记住的密码。"
+        android:layout_margin="20dp"
+        />
     <TextView
-        android:id="@+id/error_msg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorAccent"/>
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:textSize="16dp"
+        android:text="     如果您忘记了该主密码，您将无法进入本软件，同时我们也无法帮助到您。安全着想，我们建议您备份该主密码到您的邮箱上！"/>
+
 </LinearLayout>

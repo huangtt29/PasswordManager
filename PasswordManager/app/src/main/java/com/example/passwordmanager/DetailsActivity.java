@@ -52,18 +52,20 @@ public class DetailsActivity extends AppCompatActivity {
     private String title;
     private LinearLayout details_page;
     private LinearLayout choose_page;
-    private String[] mail = {"常规邮箱","谷歌邮箱","雅虎邮箱","网易邮箱","QQ邮箱"};
-    private String[] account = {"常规登录","微信","QQ","新浪微博","知乎","淘宝","京东","亚马逊","Facebook","Twitter","Instergram"};
-    private String[] wallet = {"银行卡","信用卡","身份证","驾驶证","护照","会员卡"};
+    private String[] mail = {"常规邮箱","谷歌邮箱","雅虎邮箱","网易邮箱","QQ邮箱","新浪邮箱","Outlook"};
+    private int[] mailIcon = {R.mipmap.normal_mail,R.mipmap.gmail,R.mipmap.yahhomail,R.mipmap.wymail,R.mipmap.qqmail,R.mipmap.sinamail,R.mipmap.outlook};
+    private String[] account = {"常规登录","微信","QQ","新浪微博","知乎","淘宝","京东","亚马逊","Google","Facebook","Twitter","Instargram","Linked In","Line"};
+    private int[] accountIcon = {R.mipmap.ic_launcher_round,R.mipmap.wechat,R.mipmap.qq,R.mipmap.weibo,R.mipmap.zhihu,R.mipmap.taobao,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.google,R.mipmap.fb,R.mipmap.twitter,R.mipmap.ig,R.mipmap.linkin,R.mipmap.line};
+    private String[] wallet = {"银行卡","信用卡","会员卡"};
 
     void variety_init() {
         int j=0;
         for(int i = 0; i < account.length; i++) {
-            variety v = new variety(R.mipmap.ic_launcher_round,account[i]);
+            variety v = new variety(accountIcon[i],account[i]);
             accountList.add(v);
         }
         for(int i = 0; i < mail.length; i++) {
-            variety v = new variety(R.mipmap.ic_launcher_round,mail[i]);
+            variety v = new variety(mailIcon[i],mail[i]);
             mailList.add(v);
         }
         for(int i = 0; i < wallet.length; i++) {
