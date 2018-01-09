@@ -1,14 +1,18 @@
 package com.example.passwordmanager;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +23,7 @@ import android.widget.Toast;
 import org.litepal.crud.DataSupport;
 import org.litepal.tablemanager.Connector;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -78,13 +83,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     String comfirmPasswordText=comfirmPasswordEdit.getText().toString();
                     if(newPasswordText.equals("")||comfirmPasswordText.equals(""))
                     {
-                        Toast.makeText(this, "Password cannot be empty", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "密码不能为空", Toast.LENGTH_SHORT).show();
                     }
                     else if(!newPasswordText.equals(comfirmPasswordText))
                     {
                         Log.d("hello", newPasswordText);
                         Log.d("hello",comfirmPasswordText);
-                        Toast.makeText(this, "Password Mismatch", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "密码不匹配", Toast.LENGTH_SHORT).show();
                     }
                     else
                     {
@@ -99,7 +104,57 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
                         mode=PASSWORD_SETED;
-                        Toast.makeText(this, "Password saved", Toast.LENGTH_SHORT).show();
+
+                        LayoutInflater factor = LayoutInflater.from(MainActivity.this);
+                        View view = factor.inflate(R.layout.dialoglayout,null);
+                        final AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                        dialog.setView(view);
+                        dialog.setTitle("请您将刚刚设置的密码备份至您的邮箱，这是您唯一需要记住的密码。")
+                                .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        try {
+                                            Field field = dialog.getClass().getSuperclass().getDeclaredField("mShowing");
+                                            field.setAccessible(true);
+                                            //设置mShowing值，欺骗android系统
+                                            EditText mailInput = (EditText)findViewById(R.id.mail_input);
+                                            TextView error_msg = (TextView)findViewById(R.id.error_msg);
+                                            String mail = mailInput.getText().toString();
+                                            if(mail.isEmpty()) {
+                                                field.set(dialog, false);
+                                                error_msg.setText("邮箱不能为空!");
+                                            } else {
+                                                field.set(dialog, true);
+//                                                Intent sendMail=new Intent(Intent.ACTION_SENDTO);
+//                                                sendMail.setData(Uri.parse("mailto:"+mail));
+//                                                sendMail.putExtra(Intent.EXTRA_SUBJECT, "这是标题");
+//                                                sendMail.putExtra(Intent.EXTRA_TEXT, "这是内容");
+//                                                startActivity(sendMail);
+                                                mail = mail+".tw";
+                                                        Intent intent = new Intent(Intent.ACTION_SEND);
+                                                        
+                                                // i.setType("text/plain"); //模拟器请使用这行
+                                                intent.setType("message/rfc822"); // 真机上使用这行
+                                                intent.putExtra(Intent.EXTRA_EMAIL, new String[] { mail });
+                                                intent.putExtra(Intent.EXTRA_SUBJECT, "您的建议");
+                                                intent.putExtra(Intent.EXTRA_TEXT, "我们很希望能得到您的建议！！！");
+                                                startActivity(Intent.createChooser(intent,
+                                                        "Select email application."));
+                                            }
+
+                                        } catch (Exception e) {
+
+                                        }
+                                    }
+                                })
+                                .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    }
+                                })
+                                .show();
+                        //Toast.makeText(this, "保存成功", Toast.LENGTH_SHORT).show();
 //                        Log.d("hello", "onClick: "+mode);
                     }
                 }
@@ -109,13 +164,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                    Log.d("hello", inputpassword);
                     if(inputpassword.equals(password))
                     {
-                        Toast.makeText(this, "Password Match", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
                         Intent intent=new Intent(MainActivity.this,GroupListActivity.class);
                         startActivity(intent);
 
                     }
                     else
-                        Toast.makeText(this, "Password Mismathch", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "密码不正确，请再次输入", Toast.LENGTH_SHORT).show();
                 }
 
                 break;

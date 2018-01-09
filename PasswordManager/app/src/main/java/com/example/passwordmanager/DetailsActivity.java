@@ -283,6 +283,34 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
 
+        searchAdapter.setOnItemClickListener(new DetailAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(int position) {
+                long id=detailList.get(position).getPass_id();
+                List<Password> list=DataSupport.where("id = ?",String.valueOf(id)).find(Password.class);
+                for(Password p: list)
+                {
+                    p.setRecent_time(new Date(System.currentTimeMillis()));
+                    p.save();
+                }
+                Intent intent = new Intent(DetailsActivity.this,acountActivity.class);
+                intent.putExtra("group_title",group_title);
+                intent.putExtra("icon",detailList.get(position).getDetail_icon());
+                intent.putExtra("pass_id",detailList.get(position).getPass_id());
+                startActivityForResult(intent,2);
+            }
+
+            @Override
+            public void onLongClick(int position) {
+
+            }
+
+            @Override
+            public void onDeleteClick(int position) {
+
+            }
+        });
+
         TextView back = (TextView)findViewById(R.id.back_to_grouplist);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
