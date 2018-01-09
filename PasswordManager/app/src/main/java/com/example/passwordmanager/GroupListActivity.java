@@ -38,7 +38,7 @@ public class GroupListActivity extends AppCompatActivity {
     private DetailAdapter recentAdapter;
     private Button setting_btn;
     private String[] title = {"所有","账户","邮箱","钱包"};
-    private int[] icon = {R.mipmap.all,R.mipmap.account,R.mipmap.mail,R.mipmap.wallet};
+    private int[] icon = {R.mipmap.all2,R.mipmap.people,R.mipmap.email,R.mipmap.wallet2};
     private int[] num = {0,0,0,0};
     private LinearLayout changePassword_Layout;
     private Button submit_btn;

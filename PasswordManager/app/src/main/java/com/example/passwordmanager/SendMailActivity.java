@@ -39,11 +39,6 @@ public class SendMailActivity extends AppCompatActivity {
                 } else if(!isEmail(mail)) {
                     Toast.makeText(SendMailActivity.this, "邮箱格式不正确", Toast.LENGTH_SHORT).show();
                 } else {
-//                    Intent data=new Intent(Intent.ACTION_SENDTO);
-//                    data.setData(Uri.parse("mailto:810974432@qq.com"));
-//                    data.putExtra(Intent.EXTRA_SUBJECT, "这是标题");
-//                    data.putExtra(Intent.EXTRA_TEXT, password);
-//                    startActivity(data);
                     CharSequence text = "您好！\n欢迎使用PasswordManager！这是您的主密码："+password+"，请做好备份及保密工作。谢谢！\n来自 PasswordManager";
                     Uri uri = Uri.parse("mailto:"+mail);
                     Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
@@ -51,7 +46,6 @@ public class SendMailActivity extends AppCompatActivity {
                     intent.putExtra(Intent.EXTRA_TEXT, text); // 正文
                     startActivity(Intent.createChooser(intent, "请选择邮件类应用"));
                     finish();
-
                 }
             }
         });

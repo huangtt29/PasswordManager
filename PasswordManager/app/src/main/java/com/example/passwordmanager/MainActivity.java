@@ -112,44 +112,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         dialog.setPositiveButton("是", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-<<<<<<< HEAD
                                         Intent intent = new Intent(MainActivity.this, SendMailActivity.class);
                                         intent.putExtra("password",password);
                                         startActivity(intent);
-=======
-                                        try {
-                                            Field field = dialog.getClass().getSuperclass().getDeclaredField("mShowing");
-                                            field.setAccessible(true);
-                                            //设置mShowing值，欺骗android系统
-                                            EditText mailInput = (EditText)findViewById(R.id.mail_input);
-                                            TextView error_msg = (TextView)findViewById(R.id.error_msg);
-                                            String mail = mailInput.getText().toString();
-                                            if(mail.isEmpty()) {
-                                                field.set(dialog, false);
-                                                error_msg.setText("邮箱不能为空!");
-                                            } else {
-                                                field.set(dialog, true);
-//                                                Intent sendMail=new Intent(Intent.ACTION_SENDTO);
-//                                                sendMail.setData(Uri.parse("mailto:"+mail));
-//                                                sendMail.putExtra(Intent.EXTRA_SUBJECT, "这是标题");
-//                                                sendMail.putExtra(Intent.EXTRA_TEXT, "这是内容");
-//                                                startActivity(sendMail);
-                                                mail = mail+".tw";
-                                                        Intent intent = new Intent(Intent.ACTION_SEND);
-
-                                                // i.setType("text/plain"); //模拟器请使用这行
-                                                intent.setType("message/rfc822"); // 真机上使用这行
-                                                intent.putExtra(Intent.EXTRA_EMAIL, new String[] { mail });
-                                                intent.putExtra(Intent.EXTRA_SUBJECT, "您的建议");
-                                                intent.putExtra(Intent.EXTRA_TEXT, "我们很希望能得到您的建议！！！");
-                                                startActivity(Intent.createChooser(intent,
-                                                        "Select email application."));
-                                            }
-
-                                        } catch (Exception e) {
-
-                                        }
->>>>>>> c966d30d2fee51b9eb1e5f1ae3b4075e6aea27b0
                                     }
                                 })
                                 .setNegativeButton("否", new DialogInterface.OnClickListener() {

@@ -57,6 +57,7 @@ public class DetailsActivity extends AppCompatActivity {
     private String[] account = {"常规登录","微信","QQ","新浪微博","知乎","淘宝","京东","亚马逊","Google","Facebook","Twitter","Instargram","Linked In","Line"};
     private int[] accountIcon = {R.mipmap.ic_launcher_round,R.mipmap.wechat,R.mipmap.qq,R.mipmap.weibo,R.mipmap.zhihu,R.mipmap.taobao,R.mipmap.ic_launcher_round,R.mipmap.ic_launcher_round,R.mipmap.google,R.mipmap.fb,R.mipmap.twitter,R.mipmap.ig,R.mipmap.linkin,R.mipmap.line};
     private String[] wallet = {"银行卡","信用卡","会员卡"};
+    private int[] walletIcon = {};
 
     void variety_init() {
         int j=0;
