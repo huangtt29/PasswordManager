@@ -19,7 +19,7 @@
             android:id="@+id/details_toolbar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/smokewhite"
+            android:background="@color/black"
             app:popupTheme="@style/AppTheme.PopupOverlay" >
 
             <LinearLayout
@@ -31,14 +31,14 @@
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_marginTop="3dp"
-                    android:src="@mipmap/left2"/>
+                    android:src="@mipmap/left3"/>
                 <TextView
                     android:id="@+id/back_to_grouplist"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="分组列表"
                     android:textSize="15dp"
-                    android:textColor="@color/green"/>
+                    android:textColor="#FFFFFF"/>
             </LinearLayout>
 
             <TextView
@@ -46,7 +46,7 @@
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:text="所有"
-                android:textColor="#000000"
+                android:textColor="#FFFFFF"
                 android:textSize="18dp"
                 android:textAlignment="center"
                 android:layout_alignParentTop="true"
@@ -63,13 +63,13 @@
                     android:layout_height="wrap_content"
                     android:text="编辑"
                     android:textSize="15dp"
-                    android:textColor="@color/green"
+                    android:textColor="#FFFFFF"
                     android:layout_marginLeft="10dp"/>
                 <ImageView
                     android:id="@+id/add"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:src="@mipmap/add"
+                    android:src="@mipmap/add2"
                     android:layout_marginLeft="20dp"/>
             </LinearLayout>
 
@@ -164,21 +164,21 @@
         <android.support.v7.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/smokewhite"
+            android:background="@color/black"
             app:popupTheme="@style/AppTheme.PopupOverlay" >
             <TextView
                 android:id="@+id/variety_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="取消"
-                android:textColor="@color/green"/>
+                android:textColor="#FFFFFF"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="选择类别"
-                android:textColor="#000000"
+                android:textColor="#FFFFFF"
                 android:textSize="18dp"
-                android:layout_marginLeft="100dp"/>
+                android:layout_marginLeft="120dp"/>
         </android.support.v7.widget.Toolbar>
 
         <android.support.v7.widget.RecyclerView

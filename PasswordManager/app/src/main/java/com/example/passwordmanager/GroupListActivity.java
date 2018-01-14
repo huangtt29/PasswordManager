@@ -3,6 +3,7 @@ package com.example.passwordmanager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class GroupListActivity extends AppCompatActivity {
@@ -38,13 +40,27 @@ public class GroupListActivity extends AppCompatActivity {
     private DetailAdapter recentAdapter;
     private Button setting_btn;
     private String[] title = {"所有","账户","邮箱","钱包"};
-    private int[] icon = {R.mipmap.all,R.mipmap.account,R.mipmap.mail,R.mipmap.wallet};
+    private int[] icon = {R.mipmap.all2,R.mipmap.people,R.mipmap.email,R.mipmap.wallet2};
     private int[] num = {0,0,0,0};
     private LinearLayout changePassword_Layout;
     private Button submit_btn;
+    private Button cancel_btn;
     private EditText originalPassword;
     private EditText setnewPassword;
     private EditText comfirmnewPassword;
+    private ConstraintLayout setting_item;
+    private ConstraintLayout sending_item;
+
+    private void getRecentList() {
+        recentList.clear();
+        List<Password> records = DataSupport.order("recent_time desc").find(Password.class);
+        for(Password record :records)
+        {
+            Detail_item detail_item = new Detail_item(record.getBaseObjId(),record.getIcon(),record.getType(), record.getTitle(), record.getAcount());
+            recentList.add(detail_item);
+        }
+        recentAdapter.notifyDataSetChanged();
+    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -57,6 +73,7 @@ public class GroupListActivity extends AppCompatActivity {
                     group_page.setVisibility(View.VISIBLE);
                     recent_page.setVisibility(View.GONE);
                     setting_page.setVisibility(View.GONE);
+                    changePassword_Layout.setVisibility(View.GONE);
                     titlebar.setText("分组列表");
                     return true;
                 case R.id.navigation_recent:
@@ -64,33 +81,20 @@ public class GroupListActivity extends AppCompatActivity {
                     group_page.setVisibility(View.GONE);
                     recent_page.setVisibility(View.VISIBLE);
                     setting_page.setVisibility(View.GONE);
+                    changePassword_Layout.setVisibility(View.GONE);
                     titlebar.setText("最近查看");
 //                    此处排序,asc desc
-                    recentList.clear();
-                    List<Password> records = DataSupport.order("recent_time desc").find(Password.class);
-                    for(Password record :records)
-                    {
-                        Detail_item detail_item = new Detail_item(record.getBaseObjId(),record.getIcon(),record.getType(), record.getTitle(), record.getAcount());
-                        recentList.add(detail_item);
-                    }
-                    recentAdapter.notifyDataSetChanged();
+                    getRecentList();
                     return true;
                 case R.id.navigation_setting:
 //                    mTextMessage.setText(R.string.title_notifications);
                     group_page.setVisibility(View.GONE);
                     recent_page.setVisibility(View.GONE);
                     setting_page.setVisibility(View.VISIBLE);
+                    setting_item.setVisibility(View.VISIBLE);
+                    sending_item.setVisibility(View.VISIBLE);
+                    changePassword_Layout.setVisibility(View.GONE);
                     titlebar.setText("设置");
-
-                    setting_btn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            setting_btn.setVisibility(View.GONE);
-                            changePassword_Layout.setVisibility(View.VISIBLE);
-
-                        }
-                    });
-
                     return true;
             }
             return false;
@@ -151,11 +155,31 @@ public class GroupListActivity extends AppCompatActivity {
         setting_page = (RelativeLayout)findViewById(R.id.setting_page);
         titlebar = (TextView)findViewById(R.id.titlebar1);
         submit_btn=(Button)findViewById(R.id.submit_btn);
-        setting_btn=(Button)findViewById(R.id.setting_btn);
+        cancel_btn=(Button)findViewById(R.id.cancel_btn);
         changePassword_Layout=(LinearLayout)findViewById(R.id.changePassword_layout);
         originalPassword=(EditText)findViewById(R.id.origanalPassword);
         setnewPassword=(EditText)findViewById(R.id.setnewPassword);
         comfirmnewPassword=(EditText)findViewById(R.id.comfirmnewPassword);
+        setting_item = (ConstraintLayout)findViewById(R.id.setting_item);
+        sending_item = (ConstraintLayout)findViewById(R.id.sending_item);
+
+        setting_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                setting_page.setVisibility(View.GONE);
+                setting_item.setVisibility(View.GONE);
+                sending_item.setVisibility(View.GONE);
+                changePassword_Layout.setVisibility(View.VISIBLE);
+            }
+        });
+
+        sending_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(GroupListActivity.this,SendMailActivity.class);
+                startActivity(intent);
+            }
+        });
 
         submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,17 +214,25 @@ public class GroupListActivity extends AppCompatActivity {
                         log.save();
 
                         Toast.makeText(GroupListActivity.this, "设置成功", Toast.LENGTH_SHORT).show();
-                        setting_btn.setVisibility(View.VISIBLE);
+//                        setting_page.setVisibility(View.VISIBLE);
+                        setting_item.setVisibility(View.VISIBLE);
+                        sending_item.setVisibility(View.VISIBLE);
                         changePassword_Layout.setVisibility(View.GONE);
                     }
-
                 }
                 else
                 {
                     Toast.makeText(GroupListActivity.this, "密码不正确", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
 
-
+        cancel_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setting_item.setVisibility(View.VISIBLE);
+                sending_item.setVisibility(View.VISIBLE);
+                changePassword_Layout.setVisibility(View.GONE);
             }
         });
 
@@ -219,6 +251,33 @@ public class GroupListActivity extends AppCompatActivity {
             }
         });
 
+        recentAdapter.setOnItemClickListener(new DetailAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(int position) {
+                long id=recentList.get(position).getPass_id();
+                List<Password> list=DataSupport.where("id = ?",String.valueOf(id)).find(Password.class);
+                for(Password p: list)
+                {
+                    p.setRecent_time(new Date(System.currentTimeMillis()));
+                    p.save();
+                }
+                Intent intent = new Intent(GroupListActivity.this,acountActivity.class);
+                intent.putExtra("group_title","最近查看");
+                intent.putExtra("icon",recentList.get(position).getDetail_icon());
+                intent.putExtra("pass_id",recentList.get(position).getPass_id());
+                startActivityForResult(intent,2);
+            }
+
+            @Override
+            public void onLongClick(int position) {
+
+            }
+
+            @Override
+            public void onDeleteClick(int position) {
+
+            }
+        });
     }
 
     @Override
@@ -232,6 +291,9 @@ public class GroupListActivity extends AppCompatActivity {
                     }
                     groupAdapter.notifyDataSetChanged();
                 }
+                break;
+            case 2:
+                getRecentList();
                 break;
         }
     }

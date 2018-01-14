@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.passwordmanager">
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name="org.litepal.LitePalApplication"
         android:allowBackup="true"
@@ -27,9 +29,11 @@
             android:name=".DetailsActivity"
             android:label="@string/title_activity_details"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".acountActivity" />
-        <activity android:name=".AddActivity"></activity>
+        <activity android:name=".AddActivity" />
+        <activity android:name=".SendMailActivity" />
+        <activity android:name=".GenerateActivity"></activity>
     </application>
 
 </manifest>
