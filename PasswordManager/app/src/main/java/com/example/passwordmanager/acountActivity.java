@@ -136,22 +136,6 @@ public class acountActivity extends AppCompatActivity {
                 if(resultCode == RESULT_OK) {
                     ///数据库操作，刷新信息页面
                     getDetailsFromDB();
-//                    pass_id = data.getLongExtra("pass_id",-1);
-//                    List<Password> list= DataSupport.where("id = ?",String.valueOf(pass_id)).find(Password.class);
-//                    for(Password p :list)
-//                    {
-//                        Log.d("test", "onCreate: "+p.getBaseObjId());
-//                        titlebar.setText(p.getType());
-//                        ac_title.setText(p.getTitle());
-//                        ac_name.setText(p.getAcount());
-//                        ac_password.setText(p.getPassword());
-//                        ac_icon.setImageResource(R.mipmap.ic_launcher_round);
-//                        ac_desc.setText(p.getDecription());
-//                        group_id = p.getGroup_id();
-//                        if(group_id == 2) {
-//                            ac_merchant.setText(p.getMerchant());
-//                        }
-//                    }
                 }
         }
     }

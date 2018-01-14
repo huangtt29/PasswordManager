@@ -5,11 +5,11 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/smokewhite"
+    android:background="@mipmap/background"
     tools:context="com.example.passwordmanager.MainActivity">
 
     <android.support.constraint.ConstraintLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/setPassword_page"
         app:layout_constraintTop_toTopOf="parent"
@@ -20,6 +20,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="你的密码"
+            android:textSize="16dp"
+            android:textColor="#FFFFFF"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
             app:layout_constraintBottom_toBottomOf="@+id/newpassword"
@@ -32,6 +34,7 @@
             android:layout_marginRight="20dp"
             android:inputType="textPassword"
             android:textColor="@color/dimgray"
+            android:textSize="16dp"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
             android:paddingLeft="15dp"
@@ -43,6 +46,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="确认密码"
+            android:textSize="16dp"
+            android:textColor="#FFFFFF"
             android:layout_marginBottom="10dp"
             android:layout_marginRight="10dp"
             app:layout_constraintBottom_toBottomOf="@+id/confirmpassword"
@@ -55,6 +60,7 @@
             android:id="@+id/confirmpassword"
             android:inputType="textPassword"
             android:textColor="@color/dimgray"
+            android:textSize="16dp"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
             android:paddingLeft="15dp"
@@ -66,7 +72,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/passwordSeted_page"
         app:layout_constraintTop_toTopOf="parent"
@@ -74,22 +80,17 @@
         app:layout_constraintRight_toRightOf="parent"
         android:visibility="gone">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="你的密码"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/password"
-            app:layout_constraintRight_toLeftOf="@id/password"/>
         <EditText
             android:id="@+id/password"
             android:inputType="textPassword"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:paddingHorizontal="10dp"
             android:layout_marginBottom="30dp"
             android:layout_marginRight="20dp"
+            android:hint="在这里输入你的密码"
             android:textColor="@color/dimgray"
+            android:textSize="16dp"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
             android:paddingLeft="15dp"
@@ -97,21 +98,23 @@
             android:layout_marginTop="150dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             />
     </android.support.constraint.ConstraintLayout>
 
 
     <Button
-        android:layout_width="200dp"
-        android:layout_height="35dp"
-        android:text="确定"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:text="确 定"
         android:id="@+id/okBtn"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="220dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:background="@drawable/btn"
         android:textColor="#FFFFFF"
+        android:textSize="16dp"
         />
 
 

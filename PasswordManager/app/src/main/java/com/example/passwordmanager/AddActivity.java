@@ -31,6 +31,7 @@ public class AddActivity extends AppCompatActivity {
     private TextView merchant_t;
     private TextView desc_t;
     private ImageView add_icon;
+    private ImageView generateBtn;
     private int group_id=-1;
     private String type;
     private int mode;
@@ -56,13 +57,13 @@ public class AddActivity extends AppCompatActivity {
         add_icon=(ImageView)findViewById(R.id.add_icon);
         merchant_t=(TextView)findViewById(R.id.merchant_t2);
         desc_t=(TextView)findViewById(R.id.desc_t2);
-
+        generateBtn = (ImageView)findViewById(R.id.generateBtn);
 
         Intent intent = getIntent();
         mode = intent.getIntExtra("mode",0);
-        icon = intent.getIntExtra("icon",R.mipmap.ic_launcher_round);
         Log.d("mode", "onCreate: "+mode);
         if(mode == 0) {
+            icon = intent.getIntExtra("icon",R.mipmap.ic_launcher_round);
             type = intent.getStringExtra("type");
             add_type.setText(type);
             add_icon.setImageResource(icon);
@@ -109,7 +110,7 @@ public class AddActivity extends AppCompatActivity {
                 add_acount.setText(p.getAcount());
                 add_password.setText(p.getPassword());
                 add_description.setText(p.getDecription());
-                add_icon.setImageResource(icon);
+                add_icon.setImageResource(p.getIcon());
                 group_id = p.getGroup_id();
                 if(group_id==2) {
                     add_merchant.setText(p.getMerchant());
@@ -189,6 +190,24 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
+        generateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AddActivity.this, GenerateActivity.class);
+                startActivityForResult(intent,1);
+            }
+        });
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(requestCode) {
+            case 1:
+                if(resultCode == RESULT_OK) {
+                    String password = data.getStringExtra("password");
+                    add_password.setText(password);
+                }
+                break;
+        }
     }
 }
