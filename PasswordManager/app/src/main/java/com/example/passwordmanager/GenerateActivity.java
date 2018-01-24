@@ -119,7 +119,7 @@ public class GenerateActivity extends AppCompatActivity {
         password_textview = (TextView)findViewById(R.id.generated_password);
         fleshBtn = (ImageView)findViewById(R.id.flesh_btn);
         okBtn = (Button)findViewById(R.id.generate_ok);
-        //length = Integer.parseInt(length_textview.getText().toString());
+        length = Integer.parseInt(length_textview.getText().toString());
         password = password_textview.getText().toString();
 //        isUpper = isUpperBox.isChecked();
 //        isLower = isLowerBox.isChecked();

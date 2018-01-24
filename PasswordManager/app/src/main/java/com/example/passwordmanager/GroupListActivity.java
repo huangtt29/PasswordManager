@@ -192,7 +192,6 @@ public class GroupListActivity extends AppCompatActivity {
                 newloginPassword.setLoginPassword(original);
                 newloginPassword.save();
 
-
                 LoginPassword loginPassword=DataSupport.findFirst(LoginPassword.class);
                 String firstpassword =loginPassword.getLoginPassword();
 

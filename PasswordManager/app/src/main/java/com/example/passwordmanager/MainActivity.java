@@ -89,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     else if(!newPasswordText.equals(comfirmPasswordText))
                     {
-
                         Toast.makeText(this, "密码不匹配", Toast.LENGTH_SHORT).show();
                     }
                     else
@@ -102,9 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         LoginPassword loginPassword=new LoginPassword();
                         loginPassword.setLoginPassword(password);
                         loginPassword.save();
-
                         mode=PASSWORD_SETED;
-
                         LayoutInflater factor = LayoutInflater.from(MainActivity.this);
                         View view = factor.inflate(R.layout.dialoglayout,null);
                         final AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
@@ -113,7 +110,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         Intent intent = new Intent(MainActivity.this, SendMailActivity.class);
+
                                         intent.putExtra("password",password);
+                                        Log.d("hello", "onClick: "+password);
                                         startActivity(intent);
                                     }
                                 })
